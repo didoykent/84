@@ -446,7 +446,7 @@ inbox: [
 
        vm.$socket.on('messageNotification', function(data){
      var vm = this
-
+      console.log('test')
      console.log('myunread',data)
 
 
@@ -794,7 +794,7 @@ inbox: [
 
           await axios.get('api/getFriendLists').then(function(response){
 
-            console.log(response.data.friendLatestMessage)
+            console.log(response.data.unreadMessages)
 
             Vue.set(vm.$data, 'friendLatestMessage', response.data.friendLatestMessage)
             Vue.set(vm.$data, 'myLatestMessage', response.data.myLatestMessage)

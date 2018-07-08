@@ -87,13 +87,14 @@ else if(clients.length <2){
                  io.to(latestmessage.friend['current_conn_id']).emit('messageNotification', {bonusdata: latestmessage.myId, myunread: latestmessage})
 
                  io.to(latestmessage.friend['previous_conn_id']).emit('messageNotification', {bonusdata: latestmessage.myId, myunread: latestmessage})
-
+       console.log('fckk')
                }
 
                else{
 
                    io.to(latestmessage.friend['previous_conn_id']).emit('messageNotification', {bonusdata: latestmessage.myId, myunread: latestmessage})
 
+       console.log('fck')
                }
 
 
@@ -134,16 +135,18 @@ else if(clients.length <2){
 
              if(latestmessage.friend['previous_conn_id'] != latestmessage.friend['current_conn_id']){
 
-               io.to(latestmessage.friend['current_conn_id']).emit('messageNotification', {bonusdata: latestmessage.myId})
+               io.to(latestmessage.friend['current_conn_id']).emit('messageNotification', {bonusdata: latestmessage.myId, myunread: latestmessage})
 
-               io.to(latestmessage.friend['previous_conn_id']).emit('messageNotification', {bonusdata: latestmessage.myId})
+               io.to(latestmessage.friend['previous_conn_id']).emit('messageNotification', {bonusdata: latestmessage.myId, myunread: latestmessage})
                notInRoom = true
+
+
 
              }
 
              else{
 
-                 io.to(latestmessage.friend['previous_conn_id']).emit('messageNotification', {bonusdata: latestmessage.myId})
+                   io.to(latestmessage.friend['previous_conn_id']).emit('messageNotification', {bonusdata: latestmessage.myId, myunread: latestmessage})
                  notInRoom = true
 
 

@@ -18,6 +18,8 @@ class ChatController extends Controller
 
 
 
+
+
 public function unique_multidim_array($array, $key) {
     $temp_array = array();
     $i = 0;
@@ -53,12 +55,13 @@ $authuser = JWTAuth::toUser(JWTAuth::getToken());
               }
 
 
-              $friendLatestMessage = collect($friendLatestMessage[0]->student)->sortByDesc(function ($temp, $key) {
-    return Carbon::parse($temp['date'])->getTimestamp();
-});
-
               $friendLatestMessage = $tempArray;
-              rsort($friendLatestMessage);
+              usort($friendLatestMessage, function($a1, $a2) {
+                 $value1 = strtotime($a1['updated_at']);
+                 $value2 = strtotime($a2['updated_at']);
+                 return $value2 - $value1;
+              });
+
 
         $friendslists = $friendslists[0]->student;
         $arrayCount = count($friendslists);
@@ -96,7 +99,21 @@ $authuser = JWTAuth::toUser(JWTAuth::getToken());
         else{
 
           $friendslists = $authuser->tutor()->get();
-          $friendLatestMessage = $authuser->tutor()->orderBy('updated_at', 'desc')->get();
+
+
+          $tempArray = [];
+                for($i=0; $i<count($friendslists); $i++){
+
+                array_push($tempArray, $friendslists[$i]);
+                }
+
+                          $friendLatestMessage = $tempArray;
+
+          usort($friendLatestMessage, function($a1, $a2) {
+             $value1 = strtotime($a1['updated_at']);
+             $value2 = strtotime($a2['updated_at']);
+             return $value2 - $value1;
+          });
           $arrayCount = count($friendslists);
 
           $allUnread = [count($friendslists)];

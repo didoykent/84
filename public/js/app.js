@@ -22514,7 +22514,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
           vm.$socket.on('messageNotification', function (data) {
                var vm = this;
-
+               console.log('test');
                console.log('myunread', data);
 
                for (var i = 0; i < vm.myFriends.length; i++) {
@@ -22713,7 +22713,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                                         _context.next = 4;
                                         return __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('api/getFriendLists').then(function (response) {
 
-                                             console.log(response.data.friendLatestMessage);
+                                             console.log(response.data.unreadMessages);
 
                                              __WEBPACK_IMPORTED_MODULE_1_vue___default.a.set(vm.$data, 'friendLatestMessage', response.data.friendLatestMessage);
                                              __WEBPACK_IMPORTED_MODULE_1_vue___default.a.set(vm.$data, 'myLatestMessage', response.data.myLatestMessage);
