@@ -64,6 +64,11 @@ computed:mapGetters([
   'isLogged'
 ]),
 
+beforeMount(){
+
+  this.koreaData()
+},
+
 
 
   methods:{
@@ -80,6 +85,56 @@ var vm =  this
       })
     },
 
+
+    koreaData(){
+
+      var data = new FormData();
+data.append('idx', 'all');
+
+    axios.post('https://phone.megatalking.com/api/get_list4chat_json.php', data).then(function(response){
+
+var myData = response.data
+
+
+let newobj = Object.values(myData)
+
+var newArray = [], i = 0;
+
+for(var i = 0; i<newobj.length; i++){
+
+  newArray[i] = newobj[i]
+}
+
+var tmData = new FormData();
+tmData.append('myData', newArray[0]);
+
+
+
+
+console.log('objtoArray', newobj.length)
+
+console.log('newArray', typeof(newArray))
+
+
+
+
+axios.post('api/getTmData', tmData).then(function(response){
+
+console.log('tmData', response.data.tmData)
+}).catch(function(error){
+
+  console.log(error)
+})
+
+      console.log(response.data)
+
+      var waa = response.data
+
+      console.log('that', waa.length)
+      console.log('myData', myData)
+    })
+    },
+
     studentLogOut(){
 
       var vm  = this
@@ -89,7 +144,7 @@ var vm =  this
       vm.$store.dispatch('studentLogOut')
                 vm.$socket.disconnect();
                 localStorage.removeItem('sacket');
-                
+
 
     }
   }

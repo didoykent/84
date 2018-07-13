@@ -10,7 +10,7 @@
        <v-flex xs12 sm3 class="scrollable">
 
 
-       <v-list subheader>
+       <v-list subheader style="background-color: transparent;">
          <v-subheader>Contact Lists</v-subheader>
          <v-list-tile avatar v-for="(item, index) in myFriends" :key="item.en_name" @click="selectFriend(item.id, item.chatroute, item, index)">
            <v-list-tile-avatar>
@@ -266,6 +266,8 @@ for( var i=0; i<data.clientsData.length; i++){
   }.bind(this))
 
   vm.$socket.on('messageNotification', function(data){
+
+
 var vm = this
 
 
@@ -513,6 +515,8 @@ sendMessage(){
 var vm  = this
 
 vm.tempMessage = vm.message
+
+console.log('char length', vm.message.length)
 vm.myMessages.push({'avatar' : 'https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/29468236_901369833374211_8734349036217171968_n.jpg?_nc_cat=0&oh=f8f7428a3e9e807d58b3ef91ef215062&oe=5B760837', 'name': vm.currentUserName, 'message': vm.message})
 
 
@@ -737,6 +741,7 @@ transform: translateY(-10%);
 .scrollable {
    overflow-y: auto;
    height: 100vh;
+
 
  }
 

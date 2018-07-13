@@ -71,7 +71,7 @@ $authuser = JWTAuth::toUser(JWTAuth::getToken());
         for($i=0; $i<$arrayCount; $i++){
 
           $messages = count(Message::where('tutors_id', $authuser->id)->where('student_id', $friendslists[$i]['id'])->where('read', 0)->where('from_student', 1)->get());
-          $latestMassageLists =  Message::where('tutors_id', $authuser->id)->where('student_id', $friendslists[$i]['id'])->orderBy('id', 'DESC')->limit(40)->get();
+          $latestMassageLists =  Message::where('tutors_id', $authuser->id)->where('student_id', $friendslists[$i]['id'])->orderBy('created_at', 'DESC')->limit(40)->get();
 
      array_push($allUnread, $messages);
      array_push($latestMassage, $latestMassageLists);
@@ -347,7 +347,12 @@ if($currentUser->role == 'tutor'){
 
     if(count($messages) - $scrollValue > 21 ){
 
-        $messages = Message::where('tutors_id', $currentUser->id)->where('student_id', $user2->id)->orderBy('id', 'desc')->take($scrollValue)->get();
+
+
+        $messages = Message::where('tutors_id', $currentUser->id)->where('student_id', $user2->id)->orderBy('created_at', 'DESC')->take($scrollValue)->get();
+
+
+        $messages = $messages->reverse()->values();
         $max = false;
 }
 
@@ -398,9 +403,25 @@ else{
 
 
 public function testResponse(){
+$authuser = JWTAuth::toUser(JWTAuth::getToken());
+  $friendslists = Tutor::with('student')->where('tutor_id', $authuser->id)->get();
+
+  $friendslists = $friendslists[0]->student;
 
 
-  return response()->json('test');
+  $query = Message::where('tutors_id', $authuser->id)->where('student_id', $friendslists[1]['id'])->orderBy('created_at', 'DESC')->take(40)->get();
+return response()->json($query);
+}
+
+
+public function getTmData(Request $request){
+
+
+$tmData = $request->myData;
+
+
+
+return response()->json(['tmData' => $tmData]);
 }
 
 

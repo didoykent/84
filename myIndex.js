@@ -93,6 +93,8 @@ else if(clients.length <2){
                else{
 
                    io.to(latestmessage.friend['previous_conn_id']).emit('messageNotification', {bonusdata: latestmessage.myId, myunread: latestmessage})
+                  
+                    console.log(socket.id)
 
        console.log('fck')
                }

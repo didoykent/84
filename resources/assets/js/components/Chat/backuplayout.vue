@@ -169,42 +169,26 @@
 
 
   <div  class="suggested">
+    <v-list two-line class = "suggested-list">
+              <template v-for="(item, index) in myMessages"  >
+                <v-list-tile
+                  avatar
+                  ripple
+                  @click="toggle(index)"
 
-    <v-list  class = "suggested-list">
+                >
+                <v-list-tile-avatar>
+                  <img :src="item.avatar">
+                </v-list-tile-avatar>
+                  <v-list-tile-content>
+                    <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+                    <v-list-tile-sub-title class="text--primary">{{ item.message }}</v-list-tile-sub-title>
 
+                  </v-list-tile-content>
 
-      <v-list-tile
-
-    v-for="(item, index) in myMessages"
-    :key="index"
-    avatar
-    @click=""
-    >
-
-
-
-    <v-list-tile-avatar>
-    <img :src="item.avatar">
-    </v-list-tile-avatar>
-
-    <v-list-tile-content style="height:auto;">
-    <h2 v-html="item.name"></h2>
-
-                      <v-list-tile-sub-title style = "word-break:break-all;   white-space: normal;
-  overflow: visible;
-  text-overflow: unset; ">{{ item.message }}</v-list-tile-sub-title>
-
-
-    </v-list-tile-content>
-
-
-
-
-
-    </v-list-tile>
-
-
-
+                </v-list-tile>
+                <v-divider v-if="index + 1 < myMessages.length" :key="index"></v-divider>
+              </template>
             </v-list>
 
             <audio id="player" ref="player" value = "hidden" :src="file"></audio>
@@ -223,8 +207,7 @@
     							rows="5"
     							style="width: 100%;
                   border: none;
-
-                  height: 80%;"
+                  height: 100%;"
 
 
 
@@ -387,29 +370,28 @@ inbox: [
              scrollValue: 20,
              max: false,
 
-             offFunction: false,
-             tempArray: []
+             offFunction: false
 
 
      }
 
      },
 
-     computed: {
-    // mix the getters into computed with object spread operator
-    ...mapGetters([
-      'isLogged'
+     computed:{
 
-      // ...
-    ]),
-    friendListsFilter: function(){
 
-              var vm = this
+       friendListsFilter: function(){
 
-             return vm.searchFor(vm.myFriends, vm.query, 'en_name')
-           }
+          var vm = this
 
-  },
+         return vm.searchFor(vm.myFriends, vm.query, 'en_name')
+       }
+
+
+
+     },
+
+
 
      watch:{
 
@@ -470,42 +452,30 @@ inbox: [
 
      for(var i =0; i<vm.myFriends.length; i++){
 
-
-
-
        if(vm.myFriends[i]['id'] === data.bonusdata){
 
          Vue.set(vm.myFriends[i], 'notif', vm.myFriends[i]['notif'] +=1)
 
          console.log( 'krname', data.myunread.friend['kr_name'])
 
+         if(vm.myLatestMessage[i]['name'] ===  data.myunread.currentUserName){
+         Vue.set(vm.myLatestMessage[i], 'message', data.myunread['message'])
+       }
+
+       else if(vm.myLatestMessage[i]['name'] === vm.currentUserName){
+
+              Vue.set(vm.myLatestMessage[i], 'message', data.myunread['message'])
+       }
+
+       else{
+
+          vm.myLatestMessage.splice(0,0, {'id': data.myunread.friend.id, 'name': data.myunread.currentUserName, 'message': data.myunread['message'], 'created_at': data.myunread.friend['created_at']})
+       }
 
          console.log(data.myunread.currentUserName)
 
        }
-
-          let nameToFindIndex = vm.friendLatestMessage.findIndex(p => p.en_name === data.myunread.currentUserName)
-
-
-          Vue.set(vm.friendLatestMessage[nameToFindIndex], 'latestmessage', data.myunread.message)
-
-
-      let nameToChangeAndSwap = vm.friendLatestMessage.find(p => p.en_name === data.myunread.currentUserName)
-     let originalIndex = vm.friendLatestMessage.findIndex(p => p.en_name === data.myunread.currentUserName)
-
-     vm.friendLatestMessage.splice(originalIndex, 1)
-     vm.friendLatestMessage.unshift({
-       ...nameToChangeAndSwap,
-       name: data.myunread.currentUserName
-     })
-
-}
-
-
-
-
-
-
+     }
        }.bind(this))
 
        vm.$socket.on('yourFriend', function(data){
@@ -747,9 +717,8 @@ inbox: [
      var vm  = this
 
 
-     vm.message = vm.message.replace(/(\w{29})$/, '$1 ');
+
      vm.tempMessage = vm.message
-     console.log('char length', vm.message.length)
      vm.myMessages.push({'avatar' : 'https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/29468236_901369833374211_8734349036217171968_n.jpg?_nc_cat=0&oh=f8f7428a3e9e807d58b3ef91ef215062&oe=5B760837', 'name': vm.currentUserName, 'message': vm.message})
 
 
@@ -911,7 +880,7 @@ inbox: [
      axios.post('/api/getMessages', vm.myFriend).then(function(response){
 
 
-       console.log('my messages', response.data.messages)
+
 
      console.log(response.data.scrollValue)
        console.log('messages length', response.data.messages.length)
@@ -968,7 +937,6 @@ body{
   position: fixed;
   overflow-y: hidden;
   top: 0; right: 0; bottom: 0; left: 0;
-
 }
 
 .overflow-hidden {
@@ -1048,7 +1016,6 @@ width: 100%;
 
 
 }
-
 
 
 

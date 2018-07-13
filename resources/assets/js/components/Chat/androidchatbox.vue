@@ -403,7 +403,7 @@ vm.friendLists()
 beforeMount(){
 var vm = this
 
-vm.$socket.disconnect()
+
 
    this.friendLists()
 

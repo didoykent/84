@@ -14565,6 +14565,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(4);
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 //
 //
 //
@@ -14628,6 +14630,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])(['isLogged']),
 
+  beforeMount: function beforeMount() {
+
+    this.koreaData();
+  },
+
+
   methods: {
     testIn: function testIn() {
       var vm = this;
@@ -14637,6 +14645,48 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }).catch(function (error) {
 
         console.log(error);
+      });
+    },
+    koreaData: function koreaData() {
+
+      var data = new FormData();
+      data.append('idx', 'all');
+
+      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('https://phone.megatalking.com/api/get_list4chat_json.php', data).then(function (response) {
+
+        var myData = response.data;
+
+        var newobj = Object.values(myData);
+
+        var newArray = [],
+            i = 0;
+
+        for (var i = 0; i < newobj.length; i++) {
+
+          newArray[i] = newobj[i];
+        }
+
+        var tmData = new FormData();
+        tmData.append('myData', newArray[0]);
+
+        console.log('objtoArray', newobj.length);
+
+        console.log('newArray', typeof newArray === 'undefined' ? 'undefined' : _typeof(newArray));
+
+        __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('api/getTmData', tmData).then(function (response) {
+
+          console.log('tmData', response.data.tmData);
+        }).catch(function (error) {
+
+          console.log(error);
+        });
+
+        console.log(response.data);
+
+        var waa = response.data;
+
+        console.log('that', waa.length);
+        console.log('myData', myData);
       });
     },
     studentLogOut: function studentLogOut() {
@@ -20751,6 +20801,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     }.bind(this));
 
     vm.$socket.on('messageNotification', function (data) {
+
       var vm = this;
 
       for (var i = 0; i < vm.myFriends.length; i++) {
@@ -20871,6 +20922,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       var vm = this;
 
       vm.tempMessage = vm.message;
+
+      console.log('char length', vm.message.length);
       vm.myMessages.push({ 'avatar': 'https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/29468236_901369833374211_8734349036217171968_n.jpg?_nc_cat=0&oh=f8f7428a3e9e807d58b3ef91ef215062&oe=5B760837', 'name': vm.currentUserName, 'message': vm.message });
 
       vm.formData = new FormData();
@@ -21823,7 +21876,10 @@ var render = function() {
                 [
                   _c(
                     "v-list",
-                    { attrs: { subheader: "" } },
+                    {
+                      staticStyle: { "background-color": "transparent" },
+                      attrs: { subheader: "" }
+                    },
                     [
                       _c("v-subheader", [_vm._v("Contact Lists")]),
                       _vm._v(" "),
@@ -22155,7 +22211,7 @@ exports = module.exports = __webpack_require__(7)(false);
 
 
 // module
-exports.push([module.i, "\nbody{\r\n\r\n  position: fixed;\r\n  overflow-y: hidden;\r\n  top: 0; right: 0; bottom: 0; left: 0;\n}\n.overflow-hidden {\r\n  overflow: hidden;\n}\n.horiz-scroll {\r\n  overflow-y: hidden;\r\n  overflow-x: auto;\r\n  max-width: 55vh;\n}\n,\r\n\r\n\r\n.vert-scroll{\r\n\r\n  overflow-x: hidden;\r\n  overflow-y: auto;\n}\n.scrollable{\r\n\r\n  overflow-x: hidden;\r\n  overflow-y: auto;\r\n  max-height: 55vh;\n}\n::-webkit-scrollbar {\r\n    display: none;\n}\nimg {\r\ndisplay:block;\r\n\r\nmax-width:46px;\r\nmax-height: 46px;\r\nborder-radius: 50%;\n}\n.dot {\n}\n.green{\r\n\r\n    background-color: #C0CA33;\n}\n.gray{\r\n\r\n\r\n    background-color: #2E7D32;\n}\n.adjust-container{\r\n\r\n  -webkit-transform: translateY(-20px);\r\n\r\n          transform: translateY(-20px);\n}\n.suggested > .list {\r\n\r\n\r\n   overflow-y: auto;\r\nheight: calc(100vh - 9.5rem);\r\n\r\nwidth: 100%;\n}\r\n\r\n\r\n\r\n", ""]);
+exports.push([module.i, "\nbody{\r\n\r\n  position: fixed;\r\n  overflow-y: hidden;\r\n  top: 0; right: 0; bottom: 0; left: 0;\n}\n.overflow-hidden {\r\n  overflow: hidden;\n}\n.horiz-scroll {\r\n  overflow-y: hidden;\r\n  overflow-x: auto;\r\n  max-width: 55vh;\n}\n,\r\n\r\n\r\n.vert-scroll{\r\n\r\n  overflow-x: hidden;\r\n  overflow-y: auto;\n}\n.scrollable{\r\n\r\n  overflow-x: hidden;\r\n  overflow-y: auto;\r\n  max-height: 55vh;\n}\n::-webkit-scrollbar {\r\n    display: none;\n}\nimg {\r\ndisplay:block;\r\n\r\nmax-width:46px;\r\nmax-height: 46px;\r\nborder-radius: 50%;\n}\n.dot {\n}\n.green{\r\n\r\n    background-color: #C0CA33;\n}\n.gray{\r\n\r\n\r\n    background-color: #2E7D32;\n}\n.adjust-container{\r\n\r\n  -webkit-transform: translateY(-20px);\r\n\r\n          transform: translateY(-20px);\n}\n.suggested > .list {\r\n\r\n\r\n   overflow-y: auto;\r\nheight: calc(100vh - 9.5rem);\r\n\r\nwidth: 100%;\n}\r\n\r\n\r\n\r\n\r\n", ""]);
 
 // exports
 
@@ -22175,10 +22231,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuex__ = __webpack_require__(4);
 
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -22470,12 +22545,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                file: undefined,
                audio: undefined,
                scrollValue: 20
-          }, _defineProperty(_ref, 'max', false), _defineProperty(_ref, 'offFunction', false), _ref;
+          }, _defineProperty(_ref, 'max', false), _defineProperty(_ref, 'offFunction', false), _defineProperty(_ref, 'tempArray', []), _ref;
      },
 
 
-     computed: {
+     computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_3_vuex__["b" /* mapGetters */])(['isLogged'
 
+     // ...
+     ]), {
           friendListsFilter: function friendListsFilter() {
 
                var vm = this;
@@ -22483,7 +22560,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                return vm.searchFor(vm.myFriends, vm.query, 'en_name');
           }
 
-     },
+     }),
 
      watch: {},
 
@@ -22525,18 +22602,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
                          console.log('krname', data.myunread.friend['kr_name']);
 
-                         if (vm.myLatestMessage[i]['name'] === data.myunread.currentUserName) {
-                              __WEBPACK_IMPORTED_MODULE_1_vue___default.a.set(vm.myLatestMessage[i], 'message', data.myunread['message']);
-                         } else if (vm.myLatestMessage[i]['name'] === vm.currentUserName) {
-
-                              __WEBPACK_IMPORTED_MODULE_1_vue___default.a.set(vm.myLatestMessage[i], 'message', data.myunread['message']);
-                         } else {
-
-                              vm.myLatestMessage.splice(0, 0, { 'id': data.myunread.friend.id, 'name': data.myunread.currentUserName, 'message': data.myunread['message'], 'created_at': data.myunread.friend['created_at'] });
-                         }
-
                          console.log(data.myunread.currentUserName);
                     }
+
+                    var nameToFindIndex = vm.friendLatestMessage.findIndex(function (p) {
+                         return p.en_name === data.myunread.currentUserName;
+                    });
+
+                    __WEBPACK_IMPORTED_MODULE_1_vue___default.a.set(vm.friendLatestMessage[nameToFindIndex], 'latestmessage', data.myunread.message);
+
+                    var nameToChangeAndSwap = vm.friendLatestMessage.find(function (p) {
+                         return p.en_name === data.myunread.currentUserName;
+                    });
+                    var originalIndex = vm.friendLatestMessage.findIndex(function (p) {
+                         return p.en_name === data.myunread.currentUserName;
+                    });
+
+                    vm.friendLatestMessage.splice(originalIndex, 1);
+                    vm.friendLatestMessage.unshift(_extends({}, nameToChangeAndSwap, {
+                         name: data.myunread.currentUserName
+                    }));
                }
           }.bind(this));
 
@@ -22656,7 +22741,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
                var vm = this;
 
+               vm.message = vm.message.replace(/(\w{29})$/, '$1 ');
                vm.tempMessage = vm.message;
+               console.log('char length', vm.message.length);
                vm.myMessages.push({ 'avatar': 'https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/29468236_901369833374211_8734349036217171968_n.jpg?_nc_cat=0&oh=f8f7428a3e9e807d58b3ef91ef215062&oe=5B760837', 'name': vm.currentUserName, 'message': vm.message });
 
                vm.formData = new FormData();
@@ -22790,6 +22877,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                vm.myFriend.append('scrollValue', vm.scrollValue);
 
                __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/getMessages', vm.myFriend).then(function (response) {
+
+                    console.log('my messages', response.data.messages);
 
                     console.log(response.data.scrollValue);
                     console.log('messages length', response.data.messages.length);
@@ -22931,21 +23020,21 @@ var render = function() {
                                                   "translate(15px, -15px)",
                                                 display: "inline-block"
                                               }
-                                            }),
-                                            _vm._v(" "),
-                                            _c("v-list-tile-title", {
-                                              staticStyle: {
-                                                "margin-left": "5px",
-                                                padding: "0px",
-                                                "max-width": "40px"
-                                              },
-                                              domProps: {
-                                                innerHTML: _vm._s(user.en_name)
-                                              }
                                             })
-                                          ],
-                                          1
-                                        )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("v-list-tile", {
+                                          staticStyle: {
+                                            display: "inline-block",
+                                            "list-style-type": "none",
+                                            transform: "translateY(-10px)",
+                                            "max-width": "50px"
+                                          },
+                                          domProps: {
+                                            innerHTML: _vm._s(user.en_name)
+                                          }
+                                        })
                                       ],
                                       1
                                     )
@@ -23079,54 +23168,47 @@ var render = function() {
                 [
                   _c(
                     "v-list",
-                    {
-                      staticClass: "suggested-list",
-                      attrs: { "two-line": "" }
-                    },
-                    [
-                      _vm._l(_vm.myMessages, function(item, index) {
-                        return [
+                    { staticClass: "suggested-list" },
+                    _vm._l(_vm.myMessages, function(item, index) {
+                      return _c(
+                        "v-list-tile",
+                        {
+                          key: index,
+                          attrs: { avatar: "" },
+                          on: { click: function($event) {} }
+                        },
+                        [
+                          _c("v-list-tile-avatar", [
+                            _c("img", { attrs: { src: item.avatar } })
+                          ]),
+                          _vm._v(" "),
                           _c(
-                            "v-list-tile",
-                            {
-                              attrs: { avatar: "", ripple: "" },
-                              on: {
-                                click: function($event) {
-                                  _vm.toggle(index)
-                                }
-                              }
-                            },
+                            "v-list-tile-content",
+                            { staticStyle: { height: "auto" } },
                             [
-                              _c("v-list-tile-avatar", [
-                                _c("img", { attrs: { src: item.avatar } })
-                              ]),
+                              _c("h2", {
+                                domProps: { innerHTML: _vm._s(item.name) }
+                              }),
                               _vm._v(" "),
                               _c(
-                                "v-list-tile-content",
-                                [
-                                  _c("v-list-tile-title", [
-                                    _vm._v(_vm._s(item.name))
-                                  ]),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-list-tile-sub-title",
-                                    { staticClass: "text--primary" },
-                                    [_vm._v(_vm._s(item.message))]
-                                  )
-                                ],
-                                1
+                                "v-list-tile-sub-title",
+                                {
+                                  staticStyle: {
+                                    "word-break": "break-all",
+                                    "white-space": "normal",
+                                    overflow: "visible",
+                                    "text-overflow": "unset"
+                                  }
+                                },
+                                [_vm._v(_vm._s(item.message))]
                               )
                             ],
                             1
-                          ),
-                          _vm._v(" "),
-                          index + 1 < _vm.myMessages.length
-                            ? _c("v-divider", { key: index })
-                            : _vm._e()
-                        ]
-                      })
-                    ],
-                    2
+                          )
+                        ],
+                        1
+                      )
+                    })
                   ),
                   _vm._v(" "),
                   _c("audio", {
@@ -23158,7 +23240,7 @@ var render = function() {
                     staticStyle: {
                       width: "100%",
                       border: "none",
-                      height: "100%"
+                      height: "80%"
                     },
                     attrs: { rows: "5", placeholder: "Type a message" },
                     domProps: { value: _vm.message },
