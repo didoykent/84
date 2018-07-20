@@ -36,7 +36,7 @@ studentLogin({commit}, model){
 
 
 var vm = this
-   axios.post('api/student_signin', model).then(function(response){
+   axios.post('api/mega_signin', model).then(function(response){
 
      let token = response.data.token
 
@@ -46,7 +46,7 @@ var vm = this
 
 
        commit(types.LOGIN);
-        router.push('/')
+        router.push('/chatglobal')
      }
 
      console.log(response.data.token)

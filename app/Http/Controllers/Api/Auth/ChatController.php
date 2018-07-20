@@ -10,6 +10,7 @@ use App\Tutor;
 use App\Message;
 use App\Student;
 use Carbon\Carbon;
+use App\Mega;
 
 
 
@@ -45,13 +46,25 @@ $authuser = JWTAuth::toUser(JWTAuth::getToken());
 
 
 
-        $friendslists = Tutor::with('student')->where('tutor_id', $authuser->id)->get();
-        $friendLatestMessage = Tutor::with('student')->where('tutor_id', $authuser->id)->get();
+
+
+          $students = array();
+
+          for($i=0; $i<count($authuser->my_students_id); $i++){
+
+
+
+            array_push($students, Mega::where('idx', $authuser->my_students_id[$i])->get());
+}
+        $friendslists = $students;
+
+
+        $friendLatestMessage = $students;
 
         $tempArray = [];
-              for($i=0; $i<count($friendLatestMessage[0]->student); $i++){
+              for($i=0; $i<count($friendLatestMessage); $i++){
 
-              array_push($tempArray, $friendLatestMessage[0]->student[$i]);
+              array_push($tempArray, $friendLatestMessage[$i][0]);
               }
 
 
@@ -63,7 +76,7 @@ $authuser = JWTAuth::toUser(JWTAuth::getToken());
               });
 
 
-        $friendslists = $friendslists[0]->student;
+        $friendslists = $tempArray;
         $arrayCount = count($friendslists);
         $allUnread = [count($friendslists)];
         $latestMassage = [];
@@ -98,13 +111,21 @@ $authuser = JWTAuth::toUser(JWTAuth::getToken());
 
         else{
 
-          $friendslists = $authuser->tutor()->get();
+          $tutors = array();
+
+          for($i=0; $i<count($authuser->my_tutors_id); $i++){
+
+            array_push($tutors, Mega::where('idx', $authuser->my_tutors_id[$i])->get());
+
+          }
+
+          $friendslists = $tutors;
 
 
           $tempArray = [];
                 for($i=0; $i<count($friendslists); $i++){
 
-                array_push($tempArray, $friendslists[$i]);
+                array_push($tempArray, $friendslists[$i][0]);
                 }
 
                           $friendLatestMessage = $tempArray;
@@ -114,10 +135,12 @@ $authuser = JWTAuth::toUser(JWTAuth::getToken());
              $value2 = strtotime($a2['updated_at']);
              return $value2 - $value1;
           });
-          $arrayCount = count($friendslists);
 
-          $allUnread = [count($friendslists)];
-            $latestMassage = [];
+
+                  $friendslists = $tempArray;
+                  $arrayCount = count($friendslists);
+                  $allUnread = [count($friendslists)];
+                  $latestMassage = [];
 
 
           for($i=0; $i<$arrayCount; $i++){
@@ -166,7 +189,7 @@ public function initializeData(Request $request){
   if($authuser->role == 'tutor'){
 
 
-    $mySocket = Tutor::find($authuser->id);
+    $mySocket = Mega::find($authuser->id);
 
     if($mySocket->current_conn_id){
 
@@ -185,7 +208,7 @@ public function initializeData(Request $request){
   }
   else{
 
-    $mySocket = Student::find($authuser->id);
+    $mySocket = Mega::find($authuser->id);
 
     if($mySocket->current_conn_id){
 
@@ -220,7 +243,7 @@ public function getCurrentUserId(){
 public function saveMessage(Request $request){
 
 $currentUser = JWTAuth::toUser(JWTAuth::getToken());
-$user2 = Student::find($request->secondUser);
+$user2 = Mega::find($request->secondUser);
 $message = $request->message;
 
 
@@ -237,7 +260,7 @@ $newMessage = Message::create([
   ]);
 
 
-  $latestview = Tutor::find($currentUser->id);
+  $latestview = Mega::find($currentUser->id);
   $latestview->latestmessage = $request->message;
 
   $latestview->save();
@@ -255,7 +278,7 @@ $newMessage =  Message::create([
   ]);
 
 
-  $latestview = Student::find($currentUser->id);
+  $latestview = Mega::find($currentUser->id);
   $latestview->latestmessage = $request->message;
 
   $latestview->save();
@@ -335,7 +358,7 @@ public function getMessages(Request $request){
 
 $currentUser = JWTAuth::toUser(JWTAuth::getToken());
 $scrollValue = $request->scrollValue;
-$user2 = Student::find($request->secondUser);
+$user2 = Mega::find($request->secondUser);
 
 
 
@@ -417,11 +440,60 @@ return response()->json($query);
 public function getTmData(Request $request){
 
 
-$tmData = $request->myData;
+
+  $tmData = $request->myData;
+
+  $obj = json_decode($tmData);
+
+  $arr = (array)$obj;
+
+  $array_values = array_values($arr);
 
 
 
-return response()->json(['tmData' => $tmData]);
+
+
+
+
+  for($i=0; $i<count($array_values); $i++){
+
+  $mega = new Mega;
+
+
+  $mega->tutor_id =  $array_values[$i][0]->teacher_id;
+  $mega->teacher_name = $array_values[$i][0]->teacher_name;
+  $mega->en_name = $array_values[$i][0]->teacher_name;
+  $mega->kr_name = $array_values[$i][0]->teacher_name;
+  $mega->teacher_idx = $array_values[$i][0]->teacher_idx;
+  $mega->idx = $array_values[$i][0]->teacher_idx;
+  $mega->password = bcrypt($array_values[$i][0]->teacher_idx);
+  $mega->chatroute = str_random(30);
+  $mega->role = "tutor";
+  $options = $mega->my_students_id;
+
+  $options = [];
+
+  $mega->my_students_id = $options;
+
+  $mega->save();
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+return response()->json(['tmData' => count($tutors)]);
 }
 
 

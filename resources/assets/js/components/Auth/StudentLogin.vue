@@ -11,12 +11,12 @@
                   <v-layout row>
                     <v-flex xs12>
                       <v-text-field
-                        name="email"
-                        label="Email"
-                        id="email"
-                        v-model="model.email"
-                        type="email"
-                        :rules="errors.email" required></v-text-field>
+                        name="idx"
+                        label="idx"
+                        id="idx"
+                        v-model="model.idx"
+
+                        :rules="errors.idx" required></v-text-field>
                     </v-flex>
                   </v-layout>
                   <v-layout row>

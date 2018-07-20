@@ -2,39 +2,43 @@
 
 <div>
 
-<v-app>
-  <v-toolbar  color="pink" >
-    <v-toolbar-side-icon></v-toolbar-side-icon>
-    <v-toolbar-title>Megatalking</v-toolbar-title>
-    <v-spacer></v-spacer>
-    <v-toolbar-items class="hidden-sm-and-down">
+  <q-layout>
 
+    <q-toolbar>
+       <q-btn flat round dense icon="menu"   @click="drawer = !drawer" />
+       <q-toolbar-title>
+         Toolbar
+       </q-toolbar-title>
+       <q-btn flat round dense icon="more_vert" />
 
-      <v-btn flat :to = "'student-login'" v-if = "!isLogged" >Login|</v-btn>
-      <v-btn flat :to = "'student-register'"  v-if = "!isLogged">Student</v-btn>
-      <v-btn flat :to = "'tutor-register'"  v-if = "!isLogged">Tutor</v-btn>
+    <q-layout-drawer v-model="drawer">
+      <q-scroll-area class="fit">
+           <q-list-header>Left Panel</q-list-header>
+           <q-item to="student-login" v-if = "!isLogged">
+             <q-item-side icon="account circle" />
+             <q-item-main label="Play " sublabel="Login" />
+             <q-item-side right icon="thumb_up" />
+           </q-item>
 
-
-
-
-
-        </v-toolbar-items>
-
-    <v-toolbar-items class="hidden-sm-and-down">
-
-      <v-btn flat @click="studentLogOut" v-if = "isLogged">LogOut</v-btn>
-      <v-btn flat @click="testIn" v-if = "isLogged">testData</v-btn>
-        </v-toolbar-items>
-
-  </v-toolbar>
-
+           <q-item to="student-logout"  v-if = "isLogged">
+             <q-item-side icon="account circle" />
+             <q-item-main label="Play " sublabel="LogOut" />
+             <q-item-side right icon="thumb_up" />
+           </q-item>
+            </q-scroll-area>
+</q-layout-drawer>
+ </q-toolbar>
 
 
 
   <router-view></router-view>
 
+    </q-layout>
 
-</v-app>
+
+
+
+
 
 
 
@@ -48,25 +52,35 @@
 <script>
 
 import axios from 'axios'
-import {mapGetters} from 'vuex'
+
+import {mapState , mapGetters} from 'vuex'
+
 export default{
+
+
+
+
 
   data(){
 
     return{
 
-      myData : ''
+      myData : '',
+      search: '',
+       drawer: true
     }
   },
 
-computed:mapGetters([
+computed:{
+
+...mapGetters([
 
   'isLogged'
-]),
-
+])
+},
 beforeMount(){
 
-  this.koreaData()
+
 },
 
 
@@ -88,52 +102,59 @@ var vm =  this
 
     koreaData(){
 
+
+
+
       var data = new FormData();
-data.append('idx', 'all');
+    data.append('idx', 'all');
 
-    axios.post('https://phone.megatalking.com/api/get_list4chat_json.php', data).then(function(response){
+        axios.post('https://phone.megatalking.com/api/get_list4chat_json.php', data).then(function(response){
 
-var myData = response.data
-
-
-let newobj = Object.values(myData)
-
-var newArray = [], i = 0;
-
-for(var i = 0; i<newobj.length; i++){
-
-  newArray[i] = newobj[i]
-}
-
-var tmData = new FormData();
-tmData.append('myData', newArray[0]);
+    var myData = response.data
 
 
+    let newobj = Object.values(myData)
 
+    var newArray = [], i = 0;
 
-console.log('objtoArray', newobj.length)
+    for(var i = 0; i<newobj.length; i++){
 
-console.log('newArray', typeof(newArray))
+      newArray[i] = newobj[i]
+    }
+
+    var tmData = new FormData();
 
 
 
 
-axios.post('api/getTmData', tmData).then(function(response){
+    tmData.append('myData', JSON.stringify(response.data));
 
-console.log('tmData', response.data.tmData)
-}).catch(function(error){
 
-  console.log(error)
-})
 
-      console.log(response.data)
 
-      var waa = response.data
+    console.log('objtoArray', newobj.length)
 
-      console.log('that', waa.length)
-      console.log('myData', myData)
+    console.log('newArray', typeof(newArray))
+
+
+
+
+    axios.post('api/getTmData', tmData).then(function(response){
+
+    console.log('tmData', response.data.tmData)
+    }).catch(function(error){
+
+      console.log(error)
     })
-    },
+
+          console.log(response.data)
+
+          var waa = response.data
+
+          console.log('that', waa.length)
+          console.log('myData', myData)
+        })
+        },
 
     studentLogOut(){
 

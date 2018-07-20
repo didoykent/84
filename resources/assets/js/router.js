@@ -21,13 +21,16 @@ const router = new VueRouter({
     {path: '/student-register', component:require('./components/Auth/StudentRegister.vue')},
     {path: '/tutor-register', component:require('./components/Auth/TutorRegister.vue')},
     {path: '/student-login', component:require('./components/Auth/StudentLogin.vue')},
+    {path: '/student-logout', component:require('./components/Auth/StudentLogout.vue')},
     {path: '/student-recording', component:require('./components/Recording.vue')},
     {path: '/student-edit', component:require('./components/Auth/StudentEdit.vue')},
     {path: '/choose-tutor', component:require('./components/Auth/ChooseTutor.vue')},
     {path: '/chat', component:require('./components/Chat/chat.vue')},
     {path: '/chat/:chatroute',component:require('./components/Chat/chat.vue')},
     {path: '/android-chat', component:require('./components/Chat/androidchat.vue')},
-    {path: '/android-chat/:chatroute', component:require('./components/Chat/androidchat.vue')}
+    {path: '/android-chat/:chatroute', component:require('./components/Chat/androidchat.vue')},
+    {path: '/chatglobal', component:require('./components/Chat/chatglobal.vue')},
+    {path: '/chatglobal/:chatroute', component:require('./components/Chat/chatglobal.vue')},
 
 
 

@@ -126,7 +126,7 @@
 
 
             <div class = "adjust-container">
-            <v-list-tile :key="item.kr_name" avatar @click="">
+            <v-list-tile :key="item.en_name" avatar @click="">
 
                 <img :src="'https://placeimg.com/200/200/animals'">
 
@@ -144,7 +144,7 @@
 
 
               <v-list-tile-content>
-                <v-list-tile-title>{{item.kr_name}}</v-list-tile-title>
+                <v-list-tile-title>{{item.en_name}}</v-list-tile-title>
                 <v-list-tile-sub-title>{{item.latestmessage}}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action top>
@@ -825,7 +825,7 @@ inbox: [
 
           await axios.get('api/getFriendLists').then(function(response){
 
-            console.log(response.data.unreadMessages)
+            console.log('waa',response.data.unreadMessages)
 
             Vue.set(vm.$data, 'friendLatestMessage', response.data.friendLatestMessage)
             Vue.set(vm.$data, 'myLatestMessage', response.data.myLatestMessage)

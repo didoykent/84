@@ -14,9 +14,23 @@ import App from './App.vue'
 import store from './store'
 import router from './router'
 import VueSocketio from 'vue-socket.io'
-
+import "quasar-framework/dist/umd/quasar.ios.css";
 import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
+
+
+import Quasar, { QLayout, QInput, QBtn, QChatMessage, QPage, QPageContainer, QToolbar, QToolbarTitle, QLayoutHeader,
+
+QLayoutDrawer, QLayoutFooter, QScrollArea, QListHeader, QItem, QItemSide, QItemMain, QList,  QItemSeparator, QItemTile
+ } from "quasar-framework/dist/quasar.mat.esm";
+
+ import QDrawer from "quasar-framework/dist/umd/quasar.ios.css";
+Vue.use(Quasar, { components: [QLayout, QInput, QBtn, QChatMessage, QPage, QPageContainer, QToolbar, QToolbarTitle, QLayoutHeader,
+
+QLayoutDrawer, QDrawer, QLayoutFooter, QScrollArea, QListHeader, QItem, QItemSide, QItemMain, QList, QItemSeparator, QItemTile
+
+
+] });
+
 
 Vue.use(Vuetify);
 Vue.use(VueSocketio, 'http://localhost:8890');

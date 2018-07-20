@@ -21,11 +21,14 @@ Route::get('/', ['as' => 'home_path', 'uses' => function () {
 Route::post('student_signup', 'Api\Auth\SignUpController@studentSignUp');
 Route::post('tutor_signup', 'Api\Auth\TutorSignUpController@studentSignUp');
 Route::post('student_signin', 'Api\Auth\SignInController@studentSignIn');
+Route::post('mega_signin', 'Api\Auth\SignInController@megaSignIn');
 Route::post('student_logout', 'Api\Auth\LogOutController@studentLogOut');
-Route::post('getTmData', 'Api\Auth\ChatController@getTmData');
+  Route::post('getTmData', 'Api\Auth\ChatController@getTmData');
 
 
 Route::group(['middleware' => ['jwt.auth']], function(){
+
+
 Route::get('testresponse', 'Api\Auth\ChatController@testResponse');
   Route::get('getStudents', 'StudentController@index');
   Route::get('getTutors', 'StudentController@getTutors');

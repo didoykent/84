@@ -20,22 +20,13 @@ export default{
   },
 
   beforeMount(){
-var vm = this
-let token = localStorage.getItem('token');
-
-axios.post('api/student_logout?token='+token).then(function(response){
+    var vm  = this
 
 
 
-
-localStorage.removeItem('token');
-
-console.log(response.data)
-
-}).catch(function(error){
-
-console.log(error)
-})
+    vm.$store.dispatch('studentLogOut')
+              vm.$socket.disconnect();
+              localStorage.removeItem('sacket');
 
   },
 
