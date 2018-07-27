@@ -1,6 +1,6 @@
 <template id="">
 
-  <v-container>
+  <v-container style="margin-top: 50px;">
       <v-layout row>
         <v-flex xs12 sm6 offset-sm3>
           <v-card >

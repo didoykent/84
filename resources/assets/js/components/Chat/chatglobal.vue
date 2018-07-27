@@ -1,91 +1,226 @@
 
 <template>
 <div v-if = "!offFunction">
+  <q-page padding class="row justify-center" style="">
 
-  <q-layout>
-
-   <q-page-container>
-  <q-page padding class="row justify-center">
-      <div style="width: 500px; max-width: 90vw;">
-        <q-list highlight>
-          <q-list-header>Recent chats</q-list-header>
-          <template v-for="(user, index) in friendListsFilter">
-
-          <q-item  @click.native="selectFriend(user.id, user.chatroute, user, index)">
-            <q-item-side avatar="https://picsum.photos/80/80" />
-            <q-item-main :label="user.en_name" />
-            <q-item-side right icon="chat_bubble" color="green" />
-
-          </q-item>
+      <div style="width: 500px; max-width: 90vw; margin-top: 50px; height: calc(-130px + 100vh); ">
 
 
+  <q-list highlight inset-separator class="bg-transparent" >
 
-        </template>
-          <q-item-separator />
-          <q-list-header>Previous chats</q-list-header>
-          <q-item>
-            <q-item-side avatar="https://picsum.photos/80/80" />
-            <q-item-main label="Jack Doe" />
-          </q-item>
-        </q-list>
-      </div>
+         <q-item>
+           <q-item-side avatar="https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/22281788_1586405444714343_8401123696989260119_n.jpg?_nc_cat=0&oh=36b993a6ca2b6495e1943db5e703aeaf&oe=5C0E413F" />
+           <q-item-main>
+             <q-item-tile label>John</q-item-tile>
+             <q-item-tile sublabel>
+               <span>Hi, John</span>
+             </q-item-tile>
+           </q-item-main>
+         </q-item>
+
+
+    <q-list-header>Recent Chat</q-list-header>
+        <q-scroll-area    style="height: calc(-130px + 100vh);">
+            <q-item>
+              <q-item-side avatar="https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/22281788_1586405444714343_8401123696989260119_n.jpg?_nc_cat=0&oh=36b993a6ca2b6495e1943db5e703aeaf&oe=5C0E413F" />
+              <q-item-main>
+                <q-item-tile label lines="1">John</q-item-tile>
+                <q-item-tile sublabel lines="2">  I'll be in your neighborhood doing errands this
+                  weekend. Do you want to grab brunch?
+                </q-item-tile>
+              </q-item-main>
+
+              <q-item-side right>
+        <q-item-tile stamp>10 min</q-item-tile>
+        <q-item-tile right icon="chat_bubble" color="green" />
+      </q-item-side>
+            </q-item>
+
+            <q-item>
+              <q-item-side avatar="https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/22281788_1586405444714343_8401123696989260119_n.jpg?_nc_cat=0&oh=36b993a6ca2b6495e1943db5e703aeaf&oe=5C0E413F" />
+              <q-item-main>
+                <q-item-tile label lines="1">John</q-item-tile>
+                <q-item-tile sublabel lines="2">  I'll be in your neighborhood doing errands this
+                  weekend. Do you want to grab brunch?
+                </q-item-tile>
+              </q-item-main>
+
+              <q-item-side right>
+        <q-item-tile stamp>10 min</q-item-tile>
+        <q-item-tile right icon="chat_bubble" color="green" />
+      </q-item-side>
+            </q-item>
+
+            <q-item>
+              <q-item-side avatar="https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/22281788_1586405444714343_8401123696989260119_n.jpg?_nc_cat=0&oh=36b993a6ca2b6495e1943db5e703aeaf&oe=5C0E413F" />
+              <q-item-main>
+                <q-item-tile label lines="1">John</q-item-tile>
+                <q-item-tile sublabel lines="2">  I'll be in your neighborhood doing errands this
+                  weekend. Do you want to grab brunch?
+                </q-item-tile>
+              </q-item-main>
+
+              <q-item-side right>
+        <q-item-tile stamp>10 min</q-item-tile>
+        <q-item-tile right icon="chat_bubble" color="green" />
+      </q-item-side>
+            </q-item>
+
+            <q-item>
+              <q-item-side avatar="https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/22281788_1586405444714343_8401123696989260119_n.jpg?_nc_cat=0&oh=36b993a6ca2b6495e1943db5e703aeaf&oe=5C0E413F" />
+              <q-item-main>
+                <q-item-tile label lines="1">John</q-item-tile>
+                <q-item-tile sublabel lines="2">  I'll be in your neighborhood doing errands this
+                  weekend. Do you want to grab brunch?
+                </q-item-tile>
+              </q-item-main>
+
+              <q-item-side right>
+        <q-item-tile stamp>10 min</q-item-tile>
+        <q-item-tile right icon="chat_bubble" color="green" />
+      </q-item-side>
+            </q-item>
+
+            <q-item>
+              <q-item-side avatar="https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/22281788_1586405444714343_8401123696989260119_n.jpg?_nc_cat=0&oh=36b993a6ca2b6495e1943db5e703aeaf&oe=5C0E413F" />
+              <q-item-main>
+                <q-item-tile label lines="1">John</q-item-tile>
+                <q-item-tile sublabel lines="2">  I'll be in your neighborhood doing errands this
+                  weekend. Do you want to grab brunch?
+                </q-item-tile>
+              </q-item-main>
+
+              <q-item-side right>
+        <q-item-tile stamp>10 min</q-item-tile>
+        <q-item-tile right icon="chat_bubble" color="green" />
+      </q-item-side>
+            </q-item>
+
+
+            <q-item>
+              <q-item-side avatar="https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/22281788_1586405444714343_8401123696989260119_n.jpg?_nc_cat=0&oh=36b993a6ca2b6495e1943db5e703aeaf&oe=5C0E413F" />
+              <q-item-main>
+                <q-item-tile label lines="1">John</q-item-tile>
+                <q-item-tile sublabel lines="2">  I'll be in your neighborhood doing errands this
+                  weekend. Do you want to grab brunch?
+                </q-item-tile>
+              </q-item-main>
+
+              <q-item-side right>
+        <q-item-tile stamp>10 min</q-item-tile>
+        <q-item-tile right icon="chat_bubble" color="green" />
+      </q-item-side>
+            </q-item>
+
+
+            <q-item>
+              <q-item-side avatar="https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/22281788_1586405444714343_8401123696989260119_n.jpg?_nc_cat=0&oh=36b993a6ca2b6495e1943db5e703aeaf&oe=5C0E413F" />
+              <q-item-main>
+                <q-item-tile label lines="1">John</q-item-tile>
+                <q-item-tile sublabel lines="2">  I'll be in your neighborhood doing errands this
+                  weekend. Do you want to grab brunch?
+                </q-item-tile>
+              </q-item-main>
+
+              <q-item-side right>
+        <q-item-tile stamp>10 min</q-item-tile>
+        <q-item-tile right icon="chat_bubble" color="green" />
+      </q-item-side>
+            </q-item>
+
+          </q-scroll-area>
+            <q-scroll-observable   />
+     </q-list>
+
+   </div>
       </q-page>
-
-    </q-page-container>
-  </q-layout>
 
 </div>
 
 <div v-else>
-  <q-layout>
-    <q-btn @click="$router.push({ name: 'SomePage' })" style= "background-color: transparent;"  icon="arrow back"></q-btn>
-   <q-page-container>
-     <q-page class="chat-page q-ma-xl"  >
 
-       <template  v-for="(item, index) in myMessages">
+  <q-page class="chat-page" >
+
+      <q-scroll-area   id ="chatScroll" ref="myScroll" class = "q-px-xl" style="width: 100vw; height: calc(-130px + 100vh); margin-top: 50px">
+          <div ref="scrollInner">
+        <template  v-for="(item, index) in myMessages">
+
 
        <q-chat-message
          :name="item.name"
          avatar="https://picsum.photos/80/80"
-         :text="[item.message]"
+
+         :text="item.type == 'image' ? [`<img class=\'responsive\' src=\'./images/${item.message}\' />`] : [item.message] "
          stamp="4 minutes ago"
-         sent
+         :sent = "currentUserName == item.name ? false: true"
+
       ></q-chat-message>
+
+
+
+
 
 </template>
 
+<q-scroll-observable   @scroll="scrollHandler" />
+</div>
+      </q-scroll-area>
+
+    </q-page>
+
+   <q-input
+        color="dark"
+        type="textarea"
+        ref="message"
+        class="row col-12 fixed-bottom full-width chat-message bg-white"
+       style="z-index: 1001; margin-top: 16px; overflow: auto;
+         overflow-x: hidden;"
+         :max-height="100"
+
+        v-model="message"
+        float-label="What's your message?"
+
+
+        @keyup.enter="sendMessage()"
+        :after="[
+          { icon: 'cloud upload', handler() { upload() } },
+          { icon: 'send', handler() { sendMessage() } }
+        ]"
+     >
 
 
 
-     </q-page>
+     <q-field v-if = "myFiles.length > 0"  v-for = "(files, index) in myFiles" :key = "files">
+    <q-chip  closable color="light"> <img id="blah" src="#" alt="your image" /> </q-chip>
+
+</q-chip>
+
+</q-field>
+
+   </q-input>
+
+     <q-uploader
+
+            multiple
+            class="hidden"
+            ref="uploader"
+            url="api/uploadImage"
+            :headers="{'Authorization': 'Bearer '+ token}"
+            @uploaded="onUpload"
+            @add="added"
+            @finish = "uploadFinish"
+
+            :additional-fields = "[{'name': 'secondUser', 'value' : secondUser }]"
 
 
-   </q-page-container>
-
- </q-layout>
- <q-input
-          color="dark"
-          type="textarea"
-          ref="message"
-          class="row col-12 fixed-bottom full-width chat-message bg-white""
-         style="z-index: 1001; margin-top: 16px;   overflow: auto;
-           overflow-x: hidden; :max-height:20; "
-          v-model="message"
-          float-label="What's your message?"
-          @input="notifyClientIsTyping(), visualizeMessage()"
-          @focus="visualizeMessage()"
-          @keyup.enter="submit()"
-          :before="[{icon: 'arrow_back', handler () {}}]"
-          :after="[
-             { icon: 'cloud upload', handler() { submit() } },
-          {  icon: 'send', handler() { submit() } }
+            name = "image"
 
 
-          ]"
+            method="POST"
+          ></q-uploader>
 
-        />
 
-<q-uploader :url="url" />
+
 </div>
 
 
@@ -95,6 +230,12 @@
   import Vue from 'vue'
   import axios from 'axios'
   import {mapGetters} from 'vuex'
+
+import { scroll } from "quasar-framework/dist/quasar.mat.esm.js";
+
+
+
+
   export default{
 
 
@@ -122,35 +263,23 @@
 
    friendLatestMessage: [],
 
+   tempImage: '',
+
    query: '',
 
        max: 5,
        footer: '',
        url: '',
+       chips: ['<img class=\'responsive\' src=\'https://picsum.photos/400/250\' />'],
+
+       myFiles: [],
+
+       lamar: '<img class=\'responsive\' src=\'./images/1532591147.jpg\' />',
 
 
-  inbox: [
-
-           { avatar: 'https://placeimg.com/200/200/arch', title: 'Brunch this weekend?', subtitle: "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?" },
-
-           { avatar: 'https://placeimg.com/200/200/people', title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>', subtitle: "<span class='text--primary'>to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend." },
-
-           { avatar: 'https://placeimg.com/200/200/nature', title: 'Oui oui', subtitle: "<span class='text--primary'>Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?" },
-
-           { avatar: 'https://placeimg.com/200/200/tech', title: 'Brunch this weekend?', subtitle: "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?" },
-
-           { avatar: 'https://placeimg.com/200/200/animals', title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>', subtitle: "<span class='text--primary'>to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend." },
-
-           { avatar: 'https://placeimg.com/200/200/animals', title: 'Oui oui', subtitle: "<span class='text--primary'>Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?" },
-
-           { avatar: 'https://placeimg.com/200/200/animals', title: 'Brunch this weekend?', subtitle: "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?" },
-
-           { avatar: 'https://placeimg.com/200/200/animals', title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>', subtitle: "<span class='text--primary'>to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend." },
-
-           { avatar: 'https://placeimg.com/200/200/animals', title: 'Oui oui', subtitle: "<span class='text--primary'>Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?" },
 
 
-         ],
+
 
          Active: true,
 
@@ -234,7 +363,9 @@
                max: false,
 
                offFunction: false,
-               tempArray: []
+               tempArray: [],
+
+               type: 'image'
 
 
        }
@@ -248,6 +379,10 @@
 
         // ...
       ]),
+
+      token () {
+        return localStorage.getItem('token')
+      },
       friendListsFilter: function(){
 
                 var vm = this
@@ -291,7 +426,7 @@
          axios.put(`/api/editMessage/${myData}`).then(function(response){
 
 
-           vm.scrollToEnd()
+            vm.initializeScrollArea()
 
 
          }).catch(function(error){
@@ -310,8 +445,7 @@
 
          vm.$socket.on('messageNotification', function(data){
        var vm = this
-        console.log('test')
-       console.log('myunread',data)
+
 
 
        for(var i =0; i<vm.myFriends.length; i++){
@@ -323,10 +457,6 @@
 
            Vue.set(vm.myFriends[i], 'notif', vm.myFriends[i]['notif'] +=1)
 
-           console.log( 'krname', data.myunread.friend['kr_name'])
-
-
-           console.log(data.myunread.currentUserName)
 
          }
 
@@ -404,39 +534,44 @@
          if(vm.isLogged){
 
 
-         vm.socketOp = new FormData();
-
-         vm.socketOp.append('socketId', vm.$socket.id)
-
-         axios.post('api/initializeData', vm.socketOp).then(function(response){
 
 
-         for(var i =0; i<vm.myFriends.length; i++){
+                      vm.socketOp = new FormData();
 
-           if(vm.myFriends[i]['id'] === data.currentUserId){
+                      vm.socketOp.append('socketId', vm.$socket.id)
 
-             Vue.set(vm.myFriends[i], 'current_conn_id', data.mySocket)
-             Vue.set(vm.myFriends[i], 'previous_conn_id', data.mySocket)
-
-             if(vm.getUserSock['id'] === data.currentUserId){
-
-               Vue.set(vm.getUserSock, 'current_conn_id', data.mySocket)
-               Vue.set(vm.getUserSock, 'previous_conn_id', data.mySocket)
-             }
-
-           }
+                      axios.post('api/initializeData', vm.socketOp).then(function(response){
 
 
+                      for(var i =0; i<vm.myFriends.length; i++){
 
-         }
+                        if(vm.myFriends[i]['id'] === data.currentUserId){
+
+                          Vue.set(vm.myFriends[i], 'current_conn_id', data.mySocket)
+                          Vue.set(vm.myFriends[i], 'previous_conn_id', data.mySocket)
+
+                          if(vm.getUserSock['id'] === data.currentUserId){
+
+                            Vue.set(vm.getUserSock, 'current_conn_id', data.mySocket)
+                            Vue.set(vm.getUserSock, 'previous_conn_id', data.mySocket)
+                          }
+
+                        }
 
 
 
+                      }
 
-         }).catch(function(error){
 
 
-         })
+
+                      }).catch(function(error){
+
+
+                      })
+
+
+
          }
 
        }.bind(this))
@@ -447,7 +582,18 @@
 
        vm.$socket.on('userDisconnected', function(data){
 
-       vm.friendLists()
+var vm = this
+         var myVar =    setTimeout(()=>{
+           vm.friendLists()
+
+
+
+
+         },1000)
+
+
+         clearTimeout(myVar)
+
 
          let myFriend = data
 
@@ -493,6 +639,8 @@
 
 
 
+
+
        this.friendLists()
 
 
@@ -516,6 +664,124 @@
 
        },
 
+       onUpload(file, xhr){
+
+          var vm  = this
+           console.log(file)
+           let response = JSON.parse(xhr.response)
+
+           vm.tempImage = response.image
+
+           vm.myMessages.push({'avatar' : 'https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/29468236_901369833374211_8734349036217171968_n.jpg?_nc_cat=0&oh=f8f7428a3e9e807d58b3ef91ef215062&oe=5B760837', 'name': vm.currentUserName, 'message': vm.tempImage, 'type': 'image'})
+
+
+
+             vm.initializeScrollArea()
+
+             console.log(response.image)
+
+       },
+
+       added(files){
+
+        var vm  = this
+
+               vm.$refs.uploader.upload();
+
+               console.log(files)
+
+       },
+
+       uploadFinish(){
+
+         var vm = this
+
+
+       },
+
+
+
+
+
+       scrollHandler(myScroll){
+
+ var vm = this
+         if(myScroll.position === 0 && vm.max === false){
+
+
+           vm.myFriend = new FormData();
+
+
+           vm.myFriend.append('secondUser', vm.secondUser)
+           vm.myFriend.append('scrollValue', vm.scrollValue)
+
+           axios.post('/api/getMessages', vm.myFriend).then(function(response){
+
+             console.log(response.data.messages)
+           vm.max = response.data.max
+
+
+
+
+
+
+           Vue.set(vm.$data, 'myMessages', response.data.messages)
+
+
+           vm.scrollValue+=20
+           vm.currentUserName = response.data.currentUserName
+           vm.secondUserName = response.data.secondUserName
+
+
+
+
+           }).catch(function(error){
+
+             console.log(error)
+           })
+
+
+
+
+         }
+
+
+
+
+
+
+
+
+
+
+       },
+
+       initializeScrollArea(){
+
+
+
+         var vm = this
+
+
+
+
+         setTimeout(() => {
+       	vm.$refs.myScroll.setScrollPosition(vm.$refs.scrollInner.scrollHeight, 150)
+       }, 250)
+
+
+
+
+},
+
+       upload() {
+
+         var vm = this
+       vm.$refs.uploader.pick()
+      },
+
+
+
 
        searchFor: function (list, value, column) {
              return list.filter(function (item) {
@@ -527,7 +793,7 @@
        initScroll(){
        var vm = this
 
-       var container = vm.$el.querySelector('.suggested > .list ')
+       var container = vm.$el.querySelector('.chat-page ')
        container.addEventListener("scroll", ()=>{
 
        if(container.scrollTop === 0 && vm.max === false){
@@ -544,7 +810,7 @@
 
          vm.max = response.data.max
 
-         console.log(response.data.scrollValue)
+
 
 
 
@@ -588,14 +854,25 @@
 
 
 
+
+
+
        sendMessage(){
 
        var vm  = this
 
 
-       vm.message = vm.message.replace(/(\w{29})$/, '$1 ');
+
+       const last = vm.message
+
+       var spaceCount = (vm.message.split(" ").length - 1);
+
+
+
+
+
        vm.tempMessage = vm.message
-       console.log('char length', vm.message.length)
+
        vm.myMessages.push({'avatar' : 'https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/29468236_901369833374211_8734349036217171968_n.jpg?_nc_cat=0&oh=f8f7428a3e9e807d58b3ef91ef215062&oe=5B760837', 'name': vm.currentUserName, 'message': vm.message})
 
 
@@ -614,9 +891,9 @@
 
 
 
-       vm.$socket.emit('latestMessage', {message: vm.message, friend: vm.getUserSock, messagedata: response.data, bonusdata: vm.$socket.id, secondUser: vm.secondUser, myId: vm.currentUserId, currentUserName: vm.currentUserName})
+       vm.$socket.emit('latestMessage', {message: vm.message, friend: vm.getUserSock, messagedata: response.data.id, bonusdata: vm.$socket.id, secondUser: vm.secondUser, myId: vm.currentUserId, currentUserName: vm.currentUserName})
 
-       vm.scrollToEnd()
+
        vm.message = ''
 
 
@@ -626,13 +903,17 @@
          })
 
 
+
+
+
+          vm.initializeScrollArea()
        },
 
 
 
        scrollToEnd () {
          var vm = this
-               var container = vm.$el.querySelector('.suggested > .list ')
+               var container = vm.$el.querySelector('.chat-page ')
                container.scrollTop = container.scrollHeight
 
 
@@ -671,13 +952,11 @@
 
             await axios.get('api/getFriendLists').then(function(response){
 
-              console.log('waa',response.data.unreadMessages)
+
 
               Vue.set(vm.$data, 'friendLatestMessage', response.data.friendLatestMessage)
               Vue.set(vm.$data, 'myLatestMessage', response.data.myLatestMessage)
 
-                   console.log('mylatest', vm.myLatestMessage)
-                   console.log('friendlist', response.data.friendLists)
          let unreadMessages = response.data.unreadMessages
        Vue.set(vm.$data, 'myFriends', response.data.friendLists)
        for(var i =0; i<vm.myFriends.length; i++){
@@ -690,7 +969,11 @@
        vm.currentUserId = response.data.currentUserId
        vm.currentUserRole = response.data.role
 
-       vm.$socket.emit('ImOn', {currentUserId: vm.currentUserId, mySocket: vm.$socket.id, friend: response.data.currentUser})
+       vm.messageFriend =  response.data.currentUser
+            vm.$socket.emit('ImOn', {currentUserId: vm.currentUserId, mySocket: vm.$socket.id, friend: response.data.currentUser})
+
+
+
 
        setInterval(function(){
 
@@ -733,6 +1016,9 @@
            selectFriend(id, chatroute, item, index){
 
        var vm = this
+
+
+
        vm.max = false
        vm.scrollValue = 20
        vm.offFunction = true
@@ -754,13 +1040,12 @@
        vm.myFriend.append('secondUser', id)
        vm.myFriend.append('scrollValue', vm.scrollValue)
 
+
+
        axios.post('/api/getMessages', vm.myFriend).then(function(response){
 
 
-         console.log('my messages', response.data.messages)
 
-       console.log(response.data.scrollValue)
-         console.log('messages length', response.data.messages.length)
        vm.max = response.data.max
 
        Vue.set(vm.$data, 'myMessages', response.data.messages)
@@ -771,14 +1056,14 @@
        vm.secondUserName = response.data.secondUserName
 
 
+
        if(vm.myMessages){
+
+         vm.initializeScrollArea()
 
        Vue.set(vm.myFriends[index], 'notif', 0)
 
-       vm.scrollToEnd()
 
-
-       vm.initScroll()
 
        }
 
@@ -806,33 +1091,39 @@
 
   <style>
 
-  body{
-
-    position: fixed;
-    overflow-y: hidden;
-    top: 0; right: 0; bottom: 0; left: 0;
-
-  }
-
-.chat-page{
+  body {
 
 
-    max-height: 80vh;
 
-    overflow: auto;
-    overflow-x: hidden;
-    margin-bottom: 20px;
+
+
+
+
 
 }
 
-::-webkit-scrollbar {
-    display: none;
+.chat-page {
+  overflow: auto;
+  overflow-x: hidden;
 }
 
 .chat-message .q-icon {
   margin-right: 10px;
+  min-height: 75px;
 }
 
+
+::-webkit-scrollbar {
+    display: none;
+
+
+}
+
+#chatScroll{
+
+  overflow: auto;
+  overflow-x: hidden;
+}
 
 
   </style>

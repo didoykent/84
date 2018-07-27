@@ -11,6 +11,7 @@ use App\Message;
 use App\Student;
 use Carbon\Carbon;
 use App\Mega;
+use Storage;
 
 
 
@@ -18,7 +19,16 @@ class ChatController extends Controller
 {
 
 
-
+  function NewGuid() {
+      $s = strtoupper(md5(uniqid(rand(),true)));
+      $guidText =
+          substr($s,0,8) . '-' .
+          substr($s,8,4) . '-' .
+          substr($s,12,4). '-' .
+          substr($s,16,4). '-' .
+          substr($s,20);
+      return $guidText;
+  }
 
 
 public function unique_multidim_array($array, $key) {
@@ -290,7 +300,7 @@ $newMessage =  Message::create([
 
 
 
-return response()->json($newMessage->id);
+return response()->json(['id' => $newMessage->id]);
 
 
 }
@@ -366,13 +376,13 @@ if($currentUser->role == 'tutor'){
 
 
   $max = true;
-  $messages = Message::where('tutors_id', $currentUser->id)->where('student_id', $user2->id)->get();
+  $messages = Message::where('tutors_id', $currentUser->id)->where('student_id', $user2->id)->orderBy('id', 'ASC')->get();
 
     if(count($messages) - $scrollValue > 21 ){
 
 
 
-        $messages = Message::where('tutors_id', $currentUser->id)->where('student_id', $user2->id)->orderBy('created_at', 'DESC')->take($scrollValue)->get();
+        $messages = Message::where('tutors_id', $currentUser->id)->where('student_id', $user2->id)->orderBy('id', 'DESC')->take($scrollValue)->get();
 
 
         $messages = $messages->reverse()->values();
@@ -398,11 +408,13 @@ else{
 
     $max = true;
 
-    $messages = Message::where('tutors_id', $user2->id)->where('student_id', $currentUser->id)->get();
+    $messages = Message::where('tutors_id', $user2->id)->where('student_id', $currentUser->id)->orderBy('id', 'ASC')->get();
 
     if(count($messages) - $scrollValue > 21 ){
 
         $messages = Message::where('tutors_id', $user2->id)->where('student_id', $currentUser->id)->orderBy('id', 'desc')->take($scrollValue)->get();
+
+          $messages = $messages->reverse()->values();
           $max = false;
     }
 
@@ -453,29 +465,56 @@ public function getTmData(Request $request){
 
 
 
-
-
   for($i=0; $i<count($array_values); $i++){
 
+
+  $secondArray = $array_values[$i];
+
+  for($j=0; $j<count($secondArray); $j++){
+
   $mega = new Mega;
+  $mega->student_idx = $array_values[$i][$j]->student_idx;
+  $mega->idx = $array_values[$i][$j]->student_idx;
+  $mega->password = bcrypt($array_values[$i][$j]->student_idx);
+  $mega->passkey = 'xCuJiPhKF9xC4VpTpJUa6a969W8eRW';
+  $mega->student_id = $array_values[$i][$j]->id;
+  $mega->kr_name = $array_values[$i][$j]->kr_name;
+  $mega->en_name = $array_values[$i][$j]->en_name;
 
-
-  $mega->tutor_id =  $array_values[$i][0]->teacher_id;
-  $mega->teacher_name = $array_values[$i][0]->teacher_name;
-  $mega->en_name = $array_values[$i][0]->teacher_name;
-  $mega->kr_name = $array_values[$i][0]->teacher_name;
-  $mega->teacher_idx = $array_values[$i][0]->teacher_idx;
-  $mega->idx = $array_values[$i][0]->teacher_idx;
-  $mega->password = bcrypt($array_values[$i][0]->teacher_idx);
   $mega->chatroute = str_random(30);
-  $mega->role = "tutor";
-  $options = $mega->my_students_id;
-
-  $options = [];
-
-  $mega->my_students_id = $options;
-
+  $mega->role = "student";
+  $mega->my_tutors_id = array();
   $mega->save();
+
+
+  $myStudent = Mega::where('teacher_idx', $array_values[$i][$j]->teacher_idx)->get();
+
+  $temp =  $myStudent[0]->my_students_id;
+
+  array_push($temp, $array_values[$i][$j]->student_idx);
+
+  $studentsResult = array_unique($temp);
+  $myStudent[0]->my_students_id = $studentsResult;
+
+  $myStudent[0]->save();
+
+  $myTutor = Mega::where('student_idx', $array_values[$i][$j]->student_idx)->get();
+
+  $temp =  $myTutor[0]->my_tutors_id;
+   array_push($temp, $array_values[$i][$j]->teacher_idx);
+
+  $tutorsResult = array_unique($temp);
+  $myTutor[0]->my_tutors_id = $tutorsResult;
+
+  $myTutor[0]->save();
+
+
+
+  }
+
+
+
+
 
   }
 
@@ -484,19 +523,97 @@ public function getTmData(Request $request){
 
 
 
-
-
-
-
-
-
-
-
-
-return response()->json(['tmData' => count($tutors)]);
+return response()->json(['tmData' => 'test']);
 }
 
 
+public function uploadImage(Request $request){
 
+
+
+
+
+  $currentUser = JWTAuth::toUser(JWTAuth::getToken());
+  $user2 = Mega::find($request->secondUser);
+
+
+
+  $validator = \Validator::make($request->all(),
+
+  ['image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:12000']);
+
+    if ($validator->fails()) {
+       return response()->json($validator->errors(), 422);
+    }
+
+
+
+
+
+
+
+      $image = $request->file('image');
+      $name = $this->NewGuid().'.'.$image->getClientOriginalExtension();
+
+      $destinationPath = public_path('/images');
+      $image->move($destinationPath, $name);
+
+
+
+
+
+
+
+
+
+  if($currentUser->role == 'tutor'){
+
+  $newMessage = Message::create([
+
+      'message' =>   $name ,
+      'avatar' => 'https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/29468236_901369833374211_8734349036217171968_n.jpg?_nc_cat=0&oh=f8f7428a3e9e807d58b3ef91ef215062&oe=5B760837',
+      'name' => $currentUser->en_name,
+      'tutors_id' => $currentUser->id,
+      'student_id' => $user2->id,
+      'from_tutor' => true,
+      'type' => 'image'
+    ]);
+
+
+    $latestview = Mega::find($currentUser->id);
+    $latestview->latestmessage = $currentUser->en_name . 'has sent a photo';
+
+    $latestview->save();
+  }
+
+  else{
+  $newMessage =  Message::create([
+
+      'message' =>   $name ,
+      'avatar' => 'https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/29468236_901369833374211_8734349036217171968_n.jpg?_nc_cat=0&oh=f8f7428a3e9e807d58b3ef91ef215062&oe=5B760837',
+      'name' => $currentUser->en_name,
+      'tutors_id' => $user2->id,
+      'student_id' => $currentUser->id,
+      'from_student' => true,
+      'type' => 'image'
+    ]);
+
+
+    $latestview = Mega::find($currentUser->id);
+    $latestview->latestmessage = $currentUser->en_name . 'has sent a photo';
+
+    $latestview->save();
+
+  }
+
+
+
+
+
+
+  return response()->json(['id' => $newMessage->id, 'image' => $name]);
+
+
+}
 
 }

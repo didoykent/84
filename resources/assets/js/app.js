@@ -20,13 +20,16 @@ import Vuetify from 'vuetify'
 
 import Quasar, { QLayout, QInput, QBtn, QChatMessage, QPage, QPageContainer, QToolbar, QToolbarTitle, QLayoutHeader,
 
-QLayoutDrawer, QLayoutFooter, QScrollArea, QListHeader, QItem, QItemSide, QItemMain, QList,  QItemSeparator, QItemTile
+
+QLayoutDrawer, QLayoutFooter, QScrollArea, QListHeader, QItem, QItemSide, QItemMain, QList,  QItemSeparator, QItemTile,
+QUploader, QScrollObservable, scroll, QField, QChipsInput, QChip
  } from "quasar-framework/dist/quasar.mat.esm";
 
  import QDrawer from "quasar-framework/dist/umd/quasar.ios.css";
 Vue.use(Quasar, { components: [QLayout, QInput, QBtn, QChatMessage, QPage, QPageContainer, QToolbar, QToolbarTitle, QLayoutHeader,
 
-QLayoutDrawer, QDrawer, QLayoutFooter, QScrollArea, QListHeader, QItem, QItemSide, QItemMain, QList, QItemSeparator, QItemTile
+QLayoutDrawer, QDrawer, QLayoutFooter, QScrollArea, QListHeader, QItem, QItemSide, QItemMain, QList, QItemSeparator, QItemTile, QUploader,
+ QScrollObservable, scroll, QField, QChipsInput, QChip
 
 
 ] });
@@ -34,6 +37,9 @@ QLayoutDrawer, QDrawer, QLayoutFooter, QScrollArea, QListHeader, QItem, QItemSid
 
 Vue.use(Vuetify);
 Vue.use(VueSocketio, 'http://localhost:8890');
+
+
+
 
 axios.interceptors.request.use(function(config){
 

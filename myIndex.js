@@ -87,16 +87,16 @@ else if(clients.length <2){
                  io.to(latestmessage.friend['current_conn_id']).emit('messageNotification', {bonusdata: latestmessage.myId, myunread: latestmessage})
 
                  io.to(latestmessage.friend['previous_conn_id']).emit('messageNotification', {bonusdata: latestmessage.myId, myunread: latestmessage})
-       console.log('fckk')
+
                }
 
                else{
 
                    io.to(latestmessage.friend['previous_conn_id']).emit('messageNotification', {bonusdata: latestmessage.myId, myunread: latestmessage})
-                  
-                    console.log(socket.id)
 
-       console.log('fck')
+
+
+
                }
 
 
@@ -259,9 +259,12 @@ else{
 
 
 socket.on('ImOn', function(data){
+  
+    users.push(socket.id)
+    io.sockets.emit('Now', data)
 
-  users.push(socket.id)
-  io.sockets.emit('Now', data)
+
+
 
 })
 

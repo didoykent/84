@@ -1,39 +1,50 @@
 <template id="">
 
-<div>
+    <q-layout>
 
-  <q-layout>
+     <q-page-container>
 
-    <q-toolbar>
-       <q-btn flat round dense icon="menu"   @click="drawer = !drawer" />
-       <q-toolbar-title>
+  <q-toolbar color="primary" class="fixed-top full-width z-top">
+       <q-btn @click="$router.push({ name: 'SomePage' })" color="secondary" icon="arrow back"></q-btn>
+
+    <!--
+      For Toolbar title, we use
+      QToolbarTitle component
+    -->
+
+
+
+   <q-layout-drawer v-model="drawer">
+     <q-scroll-area class="fit">
+
+          <q-item to="student-login" v-if = "!isLogged">
+            <q-item-side icon="account circle" />
+            <q-item-main label="Play " sublabel="Login" />
+            <q-item-side right icon="thumb_up" />
+          </q-item>
+
+          <q-item to="student-logout"  v-if = "isLogged">
+            <q-item-side icon="account circle" />
+            <q-item-main label="Play" sublabel="LogOut" />
+            <q-item-side right icon="thumb_up" />
+          </q-item>
+           </q-scroll-area>
+  </q-layout-drawer>
+
+  <q-toolbar-title>
          Toolbar
        </q-toolbar-title>
-       <q-btn flat round dense icon="more_vert" />
 
-    <q-layout-drawer v-model="drawer">
-      <q-scroll-area class="fit">
-           <q-list-header>Left Panel</q-list-header>
-           <q-item to="student-login" v-if = "!isLogged">
-             <q-item-side icon="account circle" />
-             <q-item-main label="Play " sublabel="Login" />
-             <q-item-side right icon="thumb_up" />
-           </q-item>
 
-           <q-item to="student-logout"  v-if = "isLogged">
-             <q-item-side icon="account circle" />
-             <q-item-main label="Play " sublabel="LogOut" />
-             <q-item-side right icon="thumb_up" />
-           </q-item>
-            </q-scroll-area>
-</q-layout-drawer>
- </q-toolbar>
-
+       <q-btn flat round dense icon="menu"   @click="drawer = !drawer" />
+  </q-toolbar>
 
 
   <router-view></router-view>
 
-    </q-layout>
+</q-page-container>
+
+</q-layout>
 
 
 
@@ -43,7 +54,7 @@
 
 
 
-</div>
+
 
 
 </template>
@@ -91,7 +102,7 @@ beforeMount(){
 var vm =  this
       axios.get('api/getStudents').then(function(response){
 
-        console.log(response.data)
+
 
       }).catch(function(error){
 
@@ -132,27 +143,23 @@ var vm =  this
 
 
 
-    console.log('objtoArray', newobj.length)
 
-    console.log('newArray', typeof(newArray))
 
 
 
 
     axios.post('api/getTmData', tmData).then(function(response){
 
-    console.log('tmData', response.data.tmData)
+
     }).catch(function(error){
 
       console.log(error)
     })
 
-          console.log(response.data)
+
 
           var waa = response.data
 
-          console.log('that', waa.length)
-          console.log('myData', myData)
         })
         },
 
@@ -164,7 +171,7 @@ var vm =  this
 
       vm.$store.dispatch('studentLogOut')
                 vm.$socket.disconnect();
-                localStorage.removeItem('sacket');
+              
 
 
     }

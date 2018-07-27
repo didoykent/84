@@ -28,9 +28,9 @@ class Messages extends Migration
               $table->boolean('from_student')->default(0)->nullable();
               $table->boolean('from_tutor')->default(0)->nullable();
               $table->integer('student_id')->unsigned()->nullable();
-              $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+              $table->string('type')->default('message')->nullable();
               $table->integer('tutors_id')->unsigned()->nullable();
-              $table->foreign('tutors_id')->references('id')->on('tutors')->onDelete('cascade');
+
 
 
 

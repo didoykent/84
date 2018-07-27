@@ -28,7 +28,7 @@ Route::post('student_logout', 'Api\Auth\LogOutController@studentLogOut');
 
 Route::group(['middleware' => ['jwt.auth']], function(){
 
-
+Route::post('uploadImage', 'Api\Auth\ChatController@uploadImage');
 Route::get('testresponse', 'Api\Auth\ChatController@testResponse');
   Route::get('getStudents', 'StudentController@index');
   Route::get('getTutors', 'StudentController@getTutors');
