@@ -15,6 +15,7 @@ import store from './store'
 import router from './router'
 import VueSocketio from 'vue-socket.io'
 import "quasar-framework/dist/umd/quasar.ios.css";
+import 'animate.css/animate.min.css'
 import Vuetify from 'vuetify'
 
 
@@ -22,21 +23,23 @@ import Quasar, { QLayout, QInput, QBtn, QChatMessage, QPage, QPageContainer, QTo
 
 
 QLayoutDrawer, QLayoutFooter, QScrollArea, QListHeader, QItem, QItemSide, QItemMain, QList,  QItemSeparator, QItemTile,
-QUploader, QScrollObservable, scroll, QField, QChipsInput, QChip
+QUploader, QScrollObservable, scroll, QField, QChipsInput, QChip, QPopover, CloseOverlay, QSpinnerDots, QInnerLoading, QSpinnerGears, QCard, QCardSeparator, QSpinner, QVideo
  } from "quasar-framework/dist/quasar.mat.esm";
 
  import QDrawer from "quasar-framework/dist/umd/quasar.ios.css";
 Vue.use(Quasar, { components: [QLayout, QInput, QBtn, QChatMessage, QPage, QPageContainer, QToolbar, QToolbarTitle, QLayoutHeader,
 
 QLayoutDrawer, QDrawer, QLayoutFooter, QScrollArea, QListHeader, QItem, QItemSide, QItemMain, QList, QItemSeparator, QItemTile, QUploader,
- QScrollObservable, scroll, QField, QChipsInput, QChip
+ QScrollObservable, scroll, QField, QChipsInput, QChip, QPopover, CloseOverlay, QSpinnerDots, QInnerLoading, QSpinnerGears, QCard, QCardSeparator, QSpinner, QVideo
 
 
 ] });
 
-
+Vue.directive('close-overlay', CloseOverlay);
 Vue.use(Vuetify);
 Vue.use(VueSocketio, 'http://localhost:8890');
+
+
 
 
 

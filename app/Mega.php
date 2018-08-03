@@ -13,7 +13,7 @@ class Mega extends Model implements AuthenticatableContract
    protected $table = 'mega';
 
 
-  protected $fillable = ['en_name', 'kr_name', 'email', 'password', 'role', 'chatroute', 'conn_id', 'latestmessage', 'tutor_id', 'student_id', 'my_tutors_id', 'my_students_id', 'teacher_name', 'teacher_idx', 'student_idx', 'idx',  'passkey'];
+  protected $fillable = ['en_name', 'kr_name', 'email', 'password', 'role', 'chatroute', 'conn_id', 'latestmessage', 'tutor_id', 'student_id', 'my_tutors_id', 'my_students_id', 'teacher_name', 'teacher_idx', 'student_idx', 'idx',  'passkey', 'avatar'];
 
 
 

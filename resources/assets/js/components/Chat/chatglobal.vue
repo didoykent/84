@@ -1,136 +1,127 @@
 
 <template>
 <div v-if = "!offFunction">
-  <q-page padding class="row justify-center" style="">
-
-      <div style="width: 500px; max-width: 90vw; margin-top: 50px; height: calc(-130px + 100vh); ">
 
 
-  <q-list highlight inset-separator class="bg-transparent" >
-
-         <q-item>
-           <q-item-side avatar="https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/22281788_1586405444714343_8401123696989260119_n.jpg?_nc_cat=0&oh=36b993a6ca2b6495e1943db5e703aeaf&oe=5C0E413F" />
-           <q-item-main>
-             <q-item-tile label>John</q-item-tile>
-             <q-item-tile sublabel>
-               <span>Hi, John</span>
-             </q-item-tile>
-           </q-item-main>
-         </q-item>
+  <q-page padding class="row justify-center"  v-if = "friendLatestMessage.length > 0" >
+      <audio   class = "hidden" ref="player"  :src="audiofile"></audio>
+      <div style="width: 500px; max-width: 90vw; margin-top: 50px; " >
 
 
-    <q-list-header>Recent Chat</q-list-header>
-        <q-scroll-area    style="height: calc(-130px + 100vh);">
-            <q-item>
-              <q-item-side avatar="https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/22281788_1586405444714343_8401123696989260119_n.jpg?_nc_cat=0&oh=36b993a6ca2b6495e1943db5e703aeaf&oe=5C0E413F" />
+
+
+
+
+
+
+
+
+
+          <transition
+         appear
+         enter-active-class="animated fadeIn"
+         leave-active-class="animated fadeOut"
+       >
+
+       <div v-show="showSimulatedReturnData">
+
+         <q-card inset inline  style="width: 100%; height: 85vh;">
+
+          <q-item>
+        <q-item-side :avatar="`images/${currentUserAvatar}`"  />
+        <q-item-main>
+          <q-item-tile label>{{currentUserName}}</q-item-tile>
+          <q-item-tile sublabel>
+            <span>Hi,  {{currentUserName}}</span>
+          </q-item-tile>
+        </q-item-main>
+
+        <q-uploader
+
+
+               class="hidden"
+               ref="avatarUploader"
+               url="api/uploadAvatar"
+               :headers="{'Authorization': 'Bearer '+ token}"
+               @uploaded="avatarUpload"
+               @add="avatarAdded"
+               @finish = "avatarUploadFinish"
+
+
+
+
+
+               name = "avatarImage"
+               extensions = ".jpeg, .png, .jpg"
+
+               method="POST"
+             ></q-uploader>
+        <q-item-side right>
+                <q-btn flat round dense icon="more_vert" text-color="	#F0F8FF">
+                  <q-popover>
+                    <q-list link>
+                      <q-item v-close-overlay >
+                        <q-item-main label="Change Picture" @click.native = "uploadAvatar"/>
+                      </q-item>
+
+                    </q-list>
+                  </q-popover>
+                </q-btn>
+              </q-item-side>
+      </q-item>
+
+
+
+                 <q-list-header>Recent chats</q-list-header>
+
+                    <q-scroll-area  class = "" style=" height: calc(-130px + 87vh); margin-top: 5px; " >
+
+                 <template v-for="(user, index) in friendLatestMessage" >
+
+            <q-item  @click.native="selectFriend(user.id, user.chatroute, user, index)">
+              <q-item-side :avatar="`images/${user.avatar}`" />
               <q-item-main>
-                <q-item-tile label lines="1">John</q-item-tile>
-                <q-item-tile sublabel lines="2">  I'll be in your neighborhood doing errands this
-                  weekend. Do you want to grab brunch?
+                <q-item-tile label lines="1">{{user.en_name}}</q-item-tile>
+
+                <q-item-tile sublabel lines="2">{{user.latestmessage}}
+
                 </q-item-tile>
+
+
               </q-item-main>
 
               <q-item-side right>
-        <q-item-tile stamp>10 min</q-item-tile>
-        <q-item-tile right icon="chat_bubble" color="green" />
-      </q-item-side>
-            </q-item>
-
-            <q-item>
-              <q-item-side avatar="https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/22281788_1586405444714343_8401123696989260119_n.jpg?_nc_cat=0&oh=36b993a6ca2b6495e1943db5e703aeaf&oe=5C0E413F" />
-              <q-item-main>
-                <q-item-tile label lines="1">John</q-item-tile>
-                <q-item-tile sublabel lines="2">  I'll be in your neighborhood doing errands this
-                  weekend. Do you want to grab brunch?
-                </q-item-tile>
-              </q-item-main>
-
-              <q-item-side right>
-        <q-item-tile stamp>10 min</q-item-tile>
-        <q-item-tile right icon="chat_bubble" color="green" />
-      </q-item-side>
-            </q-item>
-
-            <q-item>
-              <q-item-side avatar="https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/22281788_1586405444714343_8401123696989260119_n.jpg?_nc_cat=0&oh=36b993a6ca2b6495e1943db5e703aeaf&oe=5C0E413F" />
-              <q-item-main>
-                <q-item-tile label lines="1">John</q-item-tile>
-                <q-item-tile sublabel lines="2">  I'll be in your neighborhood doing errands this
-                  weekend. Do you want to grab brunch?
-                </q-item-tile>
-              </q-item-main>
-
-              <q-item-side right>
-        <q-item-tile stamp>10 min</q-item-tile>
-        <q-item-tile right icon="chat_bubble" color="green" />
-      </q-item-side>
-            </q-item>
-
-            <q-item>
-              <q-item-side avatar="https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/22281788_1586405444714343_8401123696989260119_n.jpg?_nc_cat=0&oh=36b993a6ca2b6495e1943db5e703aeaf&oe=5C0E413F" />
-              <q-item-main>
-                <q-item-tile label lines="1">John</q-item-tile>
-                <q-item-tile sublabel lines="2">  I'll be in your neighborhood doing errands this
-                  weekend. Do you want to grab brunch?
-                </q-item-tile>
-              </q-item-main>
-
-              <q-item-side right>
-        <q-item-tile stamp>10 min</q-item-tile>
-        <q-item-tile right icon="chat_bubble" color="green" />
-      </q-item-side>
-            </q-item>
-
-            <q-item>
-              <q-item-side avatar="https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/22281788_1586405444714343_8401123696989260119_n.jpg?_nc_cat=0&oh=36b993a6ca2b6495e1943db5e703aeaf&oe=5C0E413F" />
-              <q-item-main>
-                <q-item-tile label lines="1">John</q-item-tile>
-                <q-item-tile sublabel lines="2">  I'll be in your neighborhood doing errands this
-                  weekend. Do you want to grab brunch?
-                </q-item-tile>
-              </q-item-main>
-
-              <q-item-side right>
-        <q-item-tile stamp>10 min</q-item-tile>
-        <q-item-tile right icon="chat_bubble" color="green" />
-      </q-item-side>
-            </q-item>
-
-
-            <q-item>
-              <q-item-side avatar="https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/22281788_1586405444714343_8401123696989260119_n.jpg?_nc_cat=0&oh=36b993a6ca2b6495e1943db5e703aeaf&oe=5C0E413F" />
-              <q-item-main>
-                <q-item-tile label lines="1">John</q-item-tile>
-                <q-item-tile sublabel lines="2">  I'll be in your neighborhood doing errands this
-                  weekend. Do you want to grab brunch?
-                </q-item-tile>
-              </q-item-main>
-
-              <q-item-side right>
-        <q-item-tile stamp>10 min</q-item-tile>
-        <q-item-tile right icon="chat_bubble" color="green" />
+        <q-item-tile stamp>{{messageDate(user)}}</q-item-tile>
+        <q-item-tile right icon="check_circle" :color="user.isActive ? 'green' : 'gray'" />
       </q-item-side>
             </q-item>
 
 
-            <q-item>
-              <q-item-side avatar="https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/22281788_1586405444714343_8401123696989260119_n.jpg?_nc_cat=0&oh=36b993a6ca2b6495e1943db5e703aeaf&oe=5C0E413F" />
-              <q-item-main>
-                <q-item-tile label lines="1">John</q-item-tile>
-                <q-item-tile sublabel lines="2">  I'll be in your neighborhood doing errands this
-                  weekend. Do you want to grab brunch?
-                </q-item-tile>
-              </q-item-main>
 
-              <q-item-side right>
-        <q-item-tile stamp>10 min</q-item-tile>
-        <q-item-tile right icon="chat_bubble" color="green" />
-      </q-item-side>
-            </q-item>
 
-          </q-scroll-area>
-            <q-scroll-observable   />
-     </q-list>
+
+
+
+
+
+
+
+
+
+
+          </template>
+            </q-scroll-area>
+
+
+
+          </q-card>
+
+  </div>
+</transition>
+<q-inner-loading :visible="visible">
+            <q-spinner color="primary" :size="36" style="margin-left: 1rem;" />
+         </q-inner-loading>
+
 
    </div>
       </q-page>
@@ -139,32 +130,108 @@
 
 <div v-else>
 
+
+
+
   <q-page class="chat-page" >
+
+    <transition
+   appear
+   enter-active-class="animated fadeIn"
+   leave-active-class="animated fadeOut"
+  >
+
+
+  <div v-show="showMessageSimulatedReturnData">
+
+
+
+  <audio   class = "hidden" ref="player"  :src="audiofile"></audio>
+
 
       <q-scroll-area   id ="chatScroll" ref="myScroll" class = "q-px-xl" style="width: 100vw; height: calc(-130px + 100vh); margin-top: 50px">
           <div ref="scrollInner">
         <template  v-for="(item, index) in myMessages">
 
+          <q-chat-message
+                 :name="item.name"
+                 :avatar="currentUserId == item.name ?  `images/${currentUserAvatar}` : `images/${item.avatar}`"
+                 :stamp="messageDate(item)"
+                 :sent="currentUserName == item.name ? true : false"
+>               <div v-if="item.type === 'image'">
+               <img class="responsive" :src="`./images/${item.message}`">
+             </div>
+             <div v-else-if="item.type === 'message'">
+               <span> {{item.message}}</span>
+             </div>
 
-       <q-chat-message
-         :name="item.name"
-         avatar="https://picsum.photos/80/80"
+             <div  v-else-if="item.type === 'audio'" class="q-video">
+               <div class="q-video">
+    <iframe
+      width="853"
+      height="480"
+      :src="`./audios/${item.message}?autoPlay=false`"
+      frameborder="0"
+      allowfullscreen
+        autoPlay=false
+          data-autoplay="false"
 
-         :text="item.type == 'image' ? [`<img class=\'responsive\' src=\'./images/${item.message}\' />`] : [item.message] "
-         stamp="4 minutes ago"
-         :sent = "currentUserName == item.name ? false: true"
-
-      ></q-chat-message>
 
 
+
+    ></iframe>
+
+</div>
+
+
+  </div>
+
+
+  <div  v-else-if="item.type === 'video'" class="q-video">
+     <div class="q-video">
+<iframe
+width="853"
+height="480"
+:src="`./videos/${item.message}?autoStart=0`"
+frameborder="0"
+allowfullscreen
+
+
+></iframe>
+</div>
+</div>
+
+             </q-chat-message>
 
 
 
 </template>
 
+  <template v-for="(ourFriend, index) in friendTyping" v-if = "ourFriend.isTyping">
+<q-chat-message
+       :name="ourFriend.name"
+       :avatar="`images/${ourFriend.avatar}`"
+     >
+       <q-spinner-dots  color="#fff" size="2rem" />
+     </q-chat-message>
+
+   </template>
+
 <q-scroll-observable   @scroll="scrollHandler" />
 </div>
       </q-scroll-area>
+
+
+
+
+
+    </div>
+
+    </transition>
+
+    <q-inner-loading :visible="messageVisible">
+                <q-spinner color="primary" :size="36" style="margin-left: 1rem;" />
+             </q-inner-loading>
 
     </q-page>
 
@@ -178,6 +245,7 @@
          :max-height="100"
 
         v-model="message"
+        @change="val => { message = val }"
         float-label="What's your message?"
 
 
@@ -204,17 +272,18 @@
             multiple
             class="hidden"
             ref="uploader"
-            url="api/uploadImage"
+            url="api/uploadFile"
             :headers="{'Authorization': 'Bearer '+ token}"
             @uploaded="onUpload"
             @add="added"
             @finish = "uploadFinish"
 
+
             :additional-fields = "[{'name': 'secondUser', 'value' : secondUser }]"
 
 
-            name = "image"
-
+            name = "file"
+            extensions = ".jpeg, .png, .jpg, .gif, .svg, .3g2, .3gp, .3gpp, .asf, .avi, .dat, .divx, .dv, .f4v, .flv, .m2ts, .m4v, .mkv, .mod, .mov, .mp4, .mpe, .mpeg, .mpeg4, .mpg, .mts, .nsv, .ogm, .ogv, .qt, .tod, .ts, .vob, .wmv, .mp3"
 
             method="POST"
           ></q-uploader>
@@ -223,13 +292,13 @@
 
 </div>
 
-
   </template>
   <script>
 
   import Vue from 'vue'
   import axios from 'axios'
   import {mapGetters} from 'vuex'
+  import moment from 'moment'
 
 import { scroll } from "quasar-framework/dist/quasar.mat.esm.js";
 
@@ -259,11 +328,39 @@ import { scroll } from "quasar-framework/dist/quasar.mat.esm.js";
 
    ],
 
+
+
+   visible: false,
+     showSimulatedReturnData: false,
+
+     messageVisible: false,
+     showMessageSimulatedReturnData: false,
+
+
+   isTyping: false,
+   isUpated: false,
+   friendTyping: [],
+   currentUserAvatar: '',
+
+   autoPlay: '?autoPlay=false',
+
+
+
+
+   myFriendTypingName: '',
+   myFriendTypingAvatar: '',
+   myFriendTypingStatus: false,
+
+
+
+
    area: '',
 
    friendLatestMessage: [],
 
-   tempImage: '',
+     lazy: 'Lazy update - on blur',
+
+   tempFile: '',
 
    query: '',
 
@@ -292,6 +389,8 @@ import { scroll } from "quasar-framework/dist/quasar.mat.esm.js";
                   { divider: true, inset: true },
 
                 ],
+
+
 
 
 
@@ -340,6 +439,8 @@ import { scroll } from "quasar-framework/dist/quasar.mat.esm.js";
 
                myFriends:[],
 
+               audiofile: './images/message_tone.mp3',
+
 
 
                myLatestMessage: [],
@@ -365,7 +466,9 @@ import { scroll } from "quasar-framework/dist/quasar.mat.esm.js";
                offFunction: false,
                tempArray: [],
 
-               type: 'image'
+               type: 'image',
+
+
 
 
        }
@@ -387,12 +490,47 @@ import { scroll } from "quasar-framework/dist/quasar.mat.esm.js";
 
                 var vm = this
 
-               return vm.searchFor(vm.myFriends, vm.query, 'en_name')
+               return vm.searchFor(vm.friendLatestMessage, vm.query, 'en_name')
              }
 
     },
 
        watch:{
+
+         message(val){
+            var vm = this
+
+
+            if(val.trim()){
+
+                vm.isTyping = true
+
+                vm.inputUpdate()
+            }
+
+            else{
+
+              vm.isTyping = false
+
+                vm.inputUpdate()
+            }
+
+
+         },
+
+
+         currentUserAvatar(newval, oldval){
+           var vm = this
+
+
+
+
+
+
+
+
+         }
+
 
 
 
@@ -408,11 +546,35 @@ import { scroll } from "quasar-framework/dist/quasar.mat.esm.js";
        mounted(){
 
 
+
+
        var vm= this
 
 
+       vm.$socket.on('myTypingStatus', function(data){
+
+
+
+          var tempArray = []
+
+          Vue.set(vm.$data, 'friendTyping', tempArray)
+
+          tempArray.push({'avatar' : data.currentUserAvatar, 'name': vm.secondUserName,  'isTyping': data.isTyping})
+
+          Vue.set(vm.$data, 'friendTyping', tempArray)
+              vm.initializeScrollArea()
+
+
+
+       })
+
+
          vm.$socket.on('sendMessage', function(data){
-         vm.myMessages.push({'avatar' : 'https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/29468236_901369833374211_8734349036217171968_n.jpg?_nc_cat=0&oh=f8f7428a3e9e807d58b3ef91ef215062&oe=5B760837', 'name': vm.secondUserName, 'message': data.message})
+
+
+
+
+         vm.myMessages.push({'avatar' : data.currentUserAvatar, 'name': vm.secondUserName, 'message': data.message, 'type': data.messageType})
        var myData = data.messagedata
        var connected = false
        var messageCount = 0;
@@ -427,6 +589,10 @@ import { scroll } from "quasar-framework/dist/quasar.mat.esm.js";
 
 
             vm.initializeScrollArea()
+
+
+               vm.$refs.player.play()
+
 
 
          }).catch(function(error){
@@ -444,18 +610,29 @@ import { scroll } from "quasar-framework/dist/quasar.mat.esm.js";
          }.bind(this))
 
          vm.$socket.on('messageNotification', function(data){
+
+
+
+
+
+
+
        var vm = this
 
+       if(data.myunread.messageType !== 'message'){
+
+         data.myunread.message = data.myunread.currentUserName + ' has sent a ' + data.myunread.messageType
+
+       }
+
+       for(var i =0; i<vm.friendLatestMessage.length; i++){
 
 
-       for(var i =0; i<vm.myFriends.length; i++){
 
 
+         if(vm.friendLatestMessage[i]['id'] === data.bonusdata){
 
-
-         if(vm.myFriends[i]['id'] === data.bonusdata){
-
-           Vue.set(vm.myFriends[i], 'notif', vm.myFriends[i]['notif'] +=1)
+           Vue.set(vm.friendLatestMessage[i], 'notif', vm.friendLatestMessage[i]['notif'] +=1)
 
 
          }
@@ -464,6 +641,7 @@ import { scroll } from "quasar-framework/dist/quasar.mat.esm.js";
 
 
             Vue.set(vm.friendLatestMessage[nameToFindIndex], 'latestmessage', data.myunread.message)
+            Vue.set(vm.friendLatestMessage[nameToFindIndex], 'created_at', data.myunread.messageDate.date)
 
 
         let nameToChangeAndSwap = vm.friendLatestMessage.find(p => p.en_name === data.myunread.currentUserName)
@@ -478,7 +656,7 @@ import { scroll } from "quasar-framework/dist/quasar.mat.esm.js";
   }
 
 
-
+  vm.$refs.player.play()
 
 
 
@@ -492,17 +670,17 @@ import { scroll } from "quasar-framework/dist/quasar.mat.esm.js";
 
        if(data !=null){
 
-           for(var i =0; i<vm.myFriends.length; i++){
+           for(var i =0; i<vm.friendLatestMessage.length; i++){
 
 
 
 
 
-             if (vm.myFriends[i]['id'] === myFriend){
+             if (vm.friendLatestMessage[i]['id'] === myFriend){
 
 
 
-                 Vue.set( vm.myFriends[i], 'isActive', true)
+                 Vue.set( vm.friendLatestMessage[i], 'isActive', true)
 
 
              }
@@ -543,12 +721,12 @@ import { scroll } from "quasar-framework/dist/quasar.mat.esm.js";
                       axios.post('api/initializeData', vm.socketOp).then(function(response){
 
 
-                      for(var i =0; i<vm.myFriends.length; i++){
+                      for(var i =0; i<vm.friendLatestMessage.length; i++){
 
-                        if(vm.myFriends[i]['id'] === data.currentUserId){
+                        if(vm.friendLatestMessage[i]['id'] === data.currentUserId){
 
-                          Vue.set(vm.myFriends[i], 'current_conn_id', data.mySocket)
-                          Vue.set(vm.myFriends[i], 'previous_conn_id', data.mySocket)
+                          Vue.set(vm.friendLatestMessage[i], 'current_conn_id', data.mySocket)
+                          Vue.set(vm.friendLatestMessage[i], 'previous_conn_id', data.mySocket)
 
                           if(vm.getUserSock['id'] === data.currentUserId){
 
@@ -601,17 +779,17 @@ var vm = this
 
 
 
-         for(var i =0; i<vm.myFriends.length; i++){
+         for(var i =0; i<vm.friendLatestMessage.length; i++){
 
 
 
 
 
-           if (vm.myFriends[i]['previous_conn_id'] === data ||  vm.myFriends[i]['current_conn_id'] === data){
+           if (vm.friendLatestMessage[i]['previous_conn_id'] === data || vm.friendLatestMessage[i]['current_conn_id'] === data){
 
 
 
-               Vue.set( vm.myFriends[i], 'isActive', false)
+               Vue.set( vm.friendLatestMessage[i], 'isActive', false)
 
 
            }
@@ -643,6 +821,11 @@ var vm = this
 
        this.friendLists()
 
+       this.showTextLoading()
+
+
+       this.showMessageTextLoading()
+
 
        },
 
@@ -664,21 +847,161 @@ var vm = this
 
        },
 
+       showTextLoading () {
+
+          var vm = this
+     vm.show()
+   },
+
+
+   messageDate (message) {
+     return moment(message.created_at).format('dddd')
+   },
+
+
+
+   show () {
+
+      var vm = this
+      this.visible = true
+      this.showSimulatedReturnData = false
+        if(vm.friendLatestMessage.length !== null){
+
+          setTimeout(()=>{
+
+
+
+        this.visible = false
+        this.showSimulatedReturnData = true
+      },500)
+      }
+
+    },
+
+
+    showMessageTextLoading(){
+
+      var vm = this
+      vm.messageShow()
+    },
+
+
+    messageShow(){
+      var vm = this
+      this.messageVisible = true
+      this.showMessageSimulatedReturnData = false
+        if(vm.myMessages.length !== null){
+
+          setTimeout(()=>{
+
+
+
+          this.messageVisible = false
+        this.showMessageSimulatedReturnData = true
+      },500)
+      }
+
+    },
+
+
+
+       uploadAvatar(){
+
+
+         var vm = this
+
+         vm.$refs.avatarUploader.pick()
+
+
+       },
+
+       avatarUpload(files, xhr){
+ var vm = this
+         let response = JSON.parse(xhr.response)
+
+
+
+         vm.myNewAvatar = response
+
+
+       },
+
+       avatarAdded(files){
+
+         var vm  = this
+
+         vm.$refs.avatarUploader.upload()
+
+       },
+
+       avatarUploadFinish(){
+
+         var vm = this
+
+
+
+
+
+
+
+
+                Vue.set(vm.$data, 'currentUserAvatar', vm.myNewAvatar)
+
+
+
+
+
+
+
+
+
+
+
+       },
+
+
+       test(){
+
+
+       },
+
+
+       inputUpdate(){
+var vm = this
+         if(vm.isTyping && !vm.isUpated){
+
+
+           vm.$socket.emit('typingStatus', { friend: vm.getUserSock, bonusdata: vm.$socket.id, secondUser: vm.secondUser, myId: vm.currentUserId, currentUserName: vm.currentUserName, isTyping: vm.isTyping, currentUserAvatar: vm.currentUserAvatar})
+
+           vm.isUpated = true
+         }
+
+         if(!vm.isTyping && vm.isUpated){
+
+
+            vm.$socket.emit('typingStatus', { friend: vm.getUserSock, bonusdata: vm.$socket.id, secondUser: vm.secondUser, myId: vm.currentUserId, currentUserName: vm.currentUserName, isTyping: vm.isTyping, currentUserAvatar: vm.currentUserAvatar})
+           vm.isUpated = false
+         }
+
+       },
+
        onUpload(file, xhr){
 
           var vm  = this
-           console.log(file)
+
            let response = JSON.parse(xhr.response)
 
-           vm.tempImage = response.image
-
-           vm.myMessages.push({'avatar' : 'https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/29468236_901369833374211_8734349036217171968_n.jpg?_nc_cat=0&oh=f8f7428a3e9e807d58b3ef91ef215062&oe=5B760837', 'name': vm.currentUserName, 'message': vm.tempImage, 'type': 'image'})
+           vm.tempFile = response.image
 
 
+
+           vm.myMessages.push({'avatar' : vm.currentUserAvatar, 'name': vm.currentUserName, 'message': vm.tempFile, 'type': response.messageType})
+
+           vm.$socket.emit('latestMessage', {message: vm.tempFile, friend: vm.getUserSock, messagedata: response.id, bonusdata: vm.$socket.id, secondUser: vm.secondUser, myId: vm.currentUserId, currentUserName: vm.currentUserName, messageType: response.messageType, currentUserAvatar: vm.currentUserAvatar, messageDate: response.messageDate})
 
              vm.initializeScrollArea()
 
-             console.log(response.image)
+
 
        },
 
@@ -688,7 +1011,7 @@ var vm = this
 
                vm.$refs.uploader.upload();
 
-               console.log(files)
+
 
        },
 
@@ -717,7 +1040,7 @@ var vm = this
 
            axios.post('/api/getMessages', vm.myFriend).then(function(response){
 
-             console.log(response.data.messages)
+
            vm.max = response.data.max
 
 
@@ -859,6 +1182,7 @@ var vm = this
 
        sendMessage(){
 
+
        var vm  = this
 
 
@@ -873,7 +1197,7 @@ var vm = this
 
        vm.tempMessage = vm.message
 
-       vm.myMessages.push({'avatar' : 'https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/29468236_901369833374211_8734349036217171968_n.jpg?_nc_cat=0&oh=f8f7428a3e9e807d58b3ef91ef215062&oe=5B760837', 'name': vm.currentUserName, 'message': vm.message})
+       vm.myMessages.push({'avatar' : vm.currentUserAvatar, 'name': vm.currentUserName, 'message': vm.message, 'type': 'message'})
 
 
 
@@ -891,7 +1215,7 @@ var vm = this
 
 
 
-       vm.$socket.emit('latestMessage', {message: vm.message, friend: vm.getUserSock, messagedata: response.data.id, bonusdata: vm.$socket.id, secondUser: vm.secondUser, myId: vm.currentUserId, currentUserName: vm.currentUserName})
+       vm.$socket.emit('latestMessage', {message: vm.message, friend: vm.getUserSock, messagedata: response.data.id, bonusdata: vm.$socket.id, secondUser: vm.secondUser, myId: vm.currentUserId, currentUserName: vm.currentUserName, messageType: response.data.messageType, currentUserAvatar: vm.currentUserAvatar, messageDate: response.data.messageDate, type: response.data.messageType})
 
 
        vm.message = ''
@@ -951,16 +1275,16 @@ var vm = this
        }
 
             await axios.get('api/getFriendLists').then(function(response){
-
-
+              vm.currentUserAvatar = response.data.currentUserAvatar
+              vm.currentUserName = response.data.currentName
 
               Vue.set(vm.$data, 'friendLatestMessage', response.data.friendLatestMessage)
               Vue.set(vm.$data, 'myLatestMessage', response.data.myLatestMessage)
 
          let unreadMessages = response.data.unreadMessages
        Vue.set(vm.$data, 'myFriends', response.data.friendLists)
-       for(var i =0; i<vm.myFriends.length; i++){
-         Vue.set(vm.myFriends[i],'notif',unreadMessages[i+1])
+       for(var i =0; i<vm.friendLatestMessage.length; i++){
+         Vue.set(vm.friendLatestMessage[i],'notif',unreadMessages[i+1])
 
        }
 
@@ -998,8 +1322,8 @@ var vm = this
                let unreadMessages = response.data.allUnread
 
 
-               for(var i =0; i<vm.myFriends.length; i++){
-                 Vue.set(vm.myFriends[i],'notif',unreadMessages[i+1])
+               for(var i =0; i<vm.friendLatestMessage.length; i++){
+                 Vue.set(vm.friendLatestMessage[i],'notif',unreadMessages[i+1])
 
                }
 
@@ -1061,7 +1385,7 @@ var vm = this
 
          vm.initializeScrollArea()
 
-       Vue.set(vm.myFriends[index], 'notif', 0)
+       Vue.set(vm.friendLatestMessage[index], 'notif', 0)
 
 
 
@@ -1095,7 +1419,7 @@ var vm = this
 
 
 
-
+  overflow-y: hidden;
 
 
 
@@ -1123,6 +1447,12 @@ var vm = this
 
   overflow: auto;
   overflow-x: hidden;
+}
+
+.responsive{
+
+
+
 }
 
 

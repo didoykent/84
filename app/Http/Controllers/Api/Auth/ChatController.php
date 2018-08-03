@@ -12,6 +12,8 @@ use App\Student;
 use Carbon\Carbon;
 use App\Mega;
 use Storage;
+use File;
+use Validator;
 
 
 
@@ -90,15 +92,49 @@ $authuser = JWTAuth::toUser(JWTAuth::getToken());
         $arrayCount = count($friendslists);
         $allUnread = [count($friendslists)];
         $latestMassage = [];
+        $latestMessages= [];
 
         for($i=0; $i<$arrayCount; $i++){
 
           $messages = count(Message::where('tutors_id', $authuser->id)->where('student_id', $friendslists[$i]['id'])->where('read', 0)->where('from_student', 1)->get());
+
+
           $latestMassageLists =  Message::where('tutors_id', $authuser->id)->where('student_id', $friendslists[$i]['id'])->orderBy('created_at', 'DESC')->limit(40)->get();
+
+
+
 
      array_push($allUnread, $messages);
      array_push($latestMassage, $latestMassageLists);
 
+
+
+
+         $friendLatestMessages =  Message::where('tutors_id', $authuser->id)->where('student_id',$friendLatestMessage[$i]['id'] )->where('from_tutor', 0)->where('name', '!=', $authuser->en_name)->orderBy('created_at', 'DESC')->first();
+     array_push($latestMessages, $friendLatestMessages);
+
+                  if( $latestMessages[$i]['message']){
+
+                    if($latestMessages[$i]['type'] == 'message'){
+                 $friendLatestMessage[$i]->latestmessage = $latestMessages[$i]['message'];
+                }
+
+                else{
+
+                  $type = $latestMessages[$i]['type'];
+
+                  $friendLatestMessage[$i]->latestmessage = $latestMessages[$i]['name'] . "\n has sent a " . $type;
+                }
+
+
+                $friendLatestMessage[$i]->created_at = $latestMessages[$i]['created_at'];
+
+             }
+
+             else{
+
+                $friendLatestMessage[$i]->latestmessage = "You are now connected to chat";
+             }
         }
 
         $newLatestMessage = [];
@@ -151,6 +187,8 @@ $authuser = JWTAuth::toUser(JWTAuth::getToken());
                   $arrayCount = count($friendslists);
                   $allUnread = [count($friendslists)];
                   $latestMassage = [];
+                  $latestMessages = [];
+
 
 
           for($i=0; $i<$arrayCount; $i++){
@@ -160,6 +198,38 @@ $authuser = JWTAuth::toUser(JWTAuth::getToken());
 
        array_push($allUnread, $messages);
             array_push($latestMassage, $latestMassageLists);
+
+
+
+                $friendLatestMessages =  Message::where('student_id', $authuser->id)->where('tutors_id',$friendLatestMessage[$i]['id'] )->where('from_student', 0)->where('name', '!=', $authuser->en_name)->orderBy('created_at', 'DESC')->first();
+            array_push($latestMessages, $friendLatestMessages);
+
+            if( $latestMessages[$i]['message']){
+
+            if($latestMessages[$i]['type'] == 'message'){
+         $friendLatestMessage[$i]->latestmessage = $latestMessages[$i]['message'];
+       }
+
+       else{
+
+         $type = $latestMessages[$i]['type'];
+
+         $friendLatestMessage[$i]->latestmessage = $latestMessages[$i]['name'] . "\n has sent a " . $type;
+       }
+
+           $friendLatestMessage[$i]->created_at = $latestMessages[$i]['created_at'];
+
+       }
+
+       else{
+
+          $friendLatestMessage[$i]->latestmessage = "You are now connected to chat";
+       }
+
+
+
+
+
 
           }
 
@@ -184,7 +254,7 @@ $authuser = JWTAuth::toUser(JWTAuth::getToken());
         }
 
 
-return response()->json(['friendLists' => $friendslists, 'currentName' => $authuser->en_name, 'currentUserId' => $authuser->id, 'role' => $authuser->role, 'unreadMessages' => $allUnread, 'currentUser' => $authuser, 'myLatestMessage' => $extraArray, 'friendLatestMessage' => $friendLatestMessage]);
+return response()->json(['friendLists' => $friendslists, 'currentName' => $authuser->en_name, 'currentUserId' => $authuser->id, 'role' => $authuser->role, 'unreadMessages' => $allUnread, 'currentUser' => $authuser, 'myLatestMessage' => $extraArray, 'friendLatestMessage' => $friendLatestMessage, 'friendLatestMessages' => $latestMessages, 'currentUserAvatar' => $authuser->avatar]);
 
 
 }
@@ -262,15 +332,18 @@ if($currentUser->role == 'tutor'){
 $newMessage = Message::create([
 
     'message' => $request->message,
-    'avatar' => 'https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/29468236_901369833374211_8734349036217171968_n.jpg?_nc_cat=0&oh=f8f7428a3e9e807d58b3ef91ef215062&oe=5B760837',
+    'avatar' => $currentUser->avatar,
     'name' => $currentUser->en_name,
     'tutors_id' => $currentUser->id,
     'student_id' => $user2->id,
-    'from_tutor' => true
+    'from_tutor' => true,
+    'type' => 'message'
   ]);
 
 
   $latestview = Mega::find($currentUser->id);
+
+
   $latestview->latestmessage = $request->message;
 
   $latestview->save();
@@ -280,11 +353,12 @@ else{
 $newMessage =  Message::create([
 
     'message' => $request->message,
-    'avatar' => 'https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/29468236_901369833374211_8734349036217171968_n.jpg?_nc_cat=0&oh=f8f7428a3e9e807d58b3ef91ef215062&oe=5B760837',
+    'avatar' => $currentUser->avatar,
     'name' => $currentUser->en_name,
     'tutors_id' => $user2->id,
     'student_id' => $currentUser->id,
-    'from_student' => true
+    'from_student' => true,
+    'type' => 'message'
   ]);
 
 
@@ -300,7 +374,7 @@ $newMessage =  Message::create([
 
 
 
-return response()->json(['id' => $newMessage->id]);
+return response()->json(['id' => $newMessage->id, 'messageDate' => $newMessage->created_at, 'messageType' => $newMessage->type]);
 
 
 }
@@ -461,64 +535,59 @@ public function getTmData(Request $request){
 
   $array_values = array_values($arr);
 
-
-
-
-
   for($i=0; $i<count($array_values); $i++){
 
 
-  $secondArray = $array_values[$i];
+$secondArray = $array_values[$i];
 
-  for($j=0; $j<count($secondArray); $j++){
+for($j=0; $j<count($secondArray); $j++){
 
-  $mega = new Mega;
-  $mega->student_idx = $array_values[$i][$j]->student_idx;
-  $mega->idx = $array_values[$i][$j]->student_idx;
-  $mega->password = bcrypt($array_values[$i][$j]->student_idx);
-  $mega->passkey = 'xCuJiPhKF9xC4VpTpJUa6a969W8eRW';
-  $mega->student_id = $array_values[$i][$j]->id;
-  $mega->kr_name = $array_values[$i][$j]->kr_name;
-  $mega->en_name = $array_values[$i][$j]->en_name;
+$mega = new Mega;
+$mega->student_idx = $array_values[$i][$j]->student_idx;
+$mega->idx = $array_values[$i][$j]->student_idx;
+$mega->password = bcrypt($array_values[$i][$j]->student_idx);
+$mega->avatar = "default_img.jpg";
+  $mega->latestmessage = "You are now connected on chat";
+$mega->student_id = $array_values[$i][$j]->id;
+$mega->kr_name = $array_values[$i][$j]->kr_name;
+$mega->en_name = $array_values[$i][$j]->en_name;
 
-  $mega->chatroute = str_random(30);
-  $mega->role = "student";
-  $mega->my_tutors_id = array();
-  $mega->save();
-
-
-  $myStudent = Mega::where('teacher_idx', $array_values[$i][$j]->teacher_idx)->get();
-
-  $temp =  $myStudent[0]->my_students_id;
-
-  array_push($temp, $array_values[$i][$j]->student_idx);
-
-  $studentsResult = array_unique($temp);
-  $myStudent[0]->my_students_id = $studentsResult;
-
-  $myStudent[0]->save();
-
-  $myTutor = Mega::where('student_idx', $array_values[$i][$j]->student_idx)->get();
-
-  $temp =  $myTutor[0]->my_tutors_id;
-   array_push($temp, $array_values[$i][$j]->teacher_idx);
-
-  $tutorsResult = array_unique($temp);
-  $myTutor[0]->my_tutors_id = $tutorsResult;
-
-  $myTutor[0]->save();
+$mega->chatroute = str_random(30);
+$mega->role = "student";
+$mega->my_tutors_id = array();
+$mega->save();
 
 
+$myStudent = Mega::where('teacher_idx', $array_values[$i][$j]->teacher_idx)->get();
 
-  }
+$temp =  $myStudent[0]->my_students_id;
+
+array_push($temp, $array_values[$i][$j]->student_idx);
+
+$studentsResult = array_unique($temp);
+$myStudent[0]->my_students_id = $studentsResult;
+
+$myStudent[0]->save();
+
+$myTutor = Mega::where('student_idx', $array_values[$i][$j]->student_idx)->get();
+
+$temp =  $myTutor[0]->my_tutors_id;
+ array_push($temp, $array_values[$i][$j]->teacher_idx);
+
+$tutorsResult = array_unique($temp);
+$myTutor[0]->my_tutors_id = $tutorsResult;
+
+$myTutor[0]->save();
 
 
 
+}
 
 
-  }
 
 
+
+}
 
 
 
@@ -527,7 +596,7 @@ return response()->json(['tmData' => 'test']);
 }
 
 
-public function uploadImage(Request $request){
+public function uploadFile(Request $request){
 
 
 
@@ -536,11 +605,33 @@ public function uploadImage(Request $request){
   $currentUser = JWTAuth::toUser(JWTAuth::getToken());
   $user2 = Mega::find($request->secondUser);
 
+    if($request->has('file')){
+
+
+
+  $fileExtension = $request->file->getMimeType();
+
+
+  if(strstr($fileExtension, "video/")){
+$filetype = "video";
+$folderPath = "/videos";
+$fileValidation = 'required|mimes:video,mp4|max:12000';
+}else if(strstr($fileExtension, "image/")){
+$filetype = "image";
+$folderPath = "/images";
+$fileValidation = 'required|image|mimes:jpeg,png,jpg,gif,svg|max:12000';
+}else if(strstr($fileExtension, "audio/")){
+$filetype = "audio";
+$folderPath = "/audios";
+$fileValidation = 'required|mimes:mpga,wav|max:12000';
+}
+
+}
 
 
   $validator = \Validator::make($request->all(),
 
-  ['image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:12000']);
+  ['file' => $fileValidation]);
 
     if ($validator->fails()) {
        return response()->json($validator->errors(), 422);
@@ -552,11 +643,15 @@ public function uploadImage(Request $request){
 
 
 
-      $image = $request->file('image');
-      $name = $this->NewGuid().'.'.$image->getClientOriginalExtension();
+      $file = $request->file('file');
 
-      $destinationPath = public_path('/images');
-      $image->move($destinationPath, $name);
+
+
+
+      $name = $this->NewGuid().'.'.$file->getClientOriginalExtension();
+
+      $destinationPath = public_path($folderPath);
+      $file->move($destinationPath, $name);
 
 
 
@@ -571,17 +666,17 @@ public function uploadImage(Request $request){
   $newMessage = Message::create([
 
       'message' =>   $name ,
-      'avatar' => 'https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/29468236_901369833374211_8734349036217171968_n.jpg?_nc_cat=0&oh=f8f7428a3e9e807d58b3ef91ef215062&oe=5B760837',
+      'avatar' => $currentUser->avatar,
       'name' => $currentUser->en_name,
       'tutors_id' => $currentUser->id,
       'student_id' => $user2->id,
       'from_tutor' => true,
-      'type' => 'image'
+      'type' => $filetype
     ]);
 
 
     $latestview = Mega::find($currentUser->id);
-    $latestview->latestmessage = $currentUser->en_name . 'has sent a photo';
+    $latestview->latestmessage = $currentUser->en_name . "\n has sent a " . $filetype;
 
     $latestview->save();
   }
@@ -590,17 +685,17 @@ public function uploadImage(Request $request){
   $newMessage =  Message::create([
 
       'message' =>   $name ,
-      'avatar' => 'https://scontent.ficn2-1.fna.fbcdn.net/v/t1.0-1/p160x160/29468236_901369833374211_8734349036217171968_n.jpg?_nc_cat=0&oh=f8f7428a3e9e807d58b3ef91ef215062&oe=5B760837',
+      'avatar' => $currentUser->avatar,
       'name' => $currentUser->en_name,
       'tutors_id' => $user2->id,
       'student_id' => $currentUser->id,
       'from_student' => true,
-      'type' => 'image'
+      'type' => $filetype
     ]);
 
 
     $latestview = Mega::find($currentUser->id);
-    $latestview->latestmessage = $currentUser->en_name . 'has sent a photo';
+    $latestview->latestmessage = $currentUser->en_name . "\n has sent a " . $filetype;
 
     $latestview->save();
 
@@ -611,8 +706,59 @@ public function uploadImage(Request $request){
 
 
 
-  return response()->json(['id' => $newMessage->id, 'image' => $name]);
+  return response()->json(['id' => $newMessage->id, 'image' => $name, 'messageType' => $newMessage->type, 'messageDate' => $newMessage->created_at, 'fileType' => $filetype]);
 
+
+}
+
+
+public function uploadAvatar(Request $request){
+
+  $currentUser = JWTAuth::toUser(JWTAuth::getToken());
+
+
+
+
+  $validator = \Validator::make($request->all(),
+
+  ['avatarImage' => 'required|image|mimes:jpeg,png,jpg|max:12000']);
+
+    if ($validator->fails()) {
+       return response()->json($validator->errors(), 422);
+    }
+
+
+
+
+
+
+
+      $image = $request->file('avatarImage');
+
+
+      $name = $this->NewGuid().'.'.$image->getClientOriginalExtension();
+
+
+      $image_path = "/images/{$name}";  // Value is not URL but directory file path
+if(File::exists($image_path)) {
+    File::delete($image_path);
+}
+
+
+
+      $destinationPath = public_path('/images');
+      $image->move($destinationPath, $name);
+
+
+      $mega = Mega::find($currentUser->id);
+
+      $mega->avatar = $name;
+
+      $mega->save();
+
+
+
+return response()->json($name);
 
 }
 

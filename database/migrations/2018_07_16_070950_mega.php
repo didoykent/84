@@ -34,7 +34,7 @@ class Mega extends Migration
         $table->string('student_id')->nullable();
         $table->json('my_tutors_id')->nullable();
         $table->json('my_students_id')->nullable();
-
+        $table->string('avatar')->nullable();
         $table->string('passkey')->nullable();
 
 

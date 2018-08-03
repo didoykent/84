@@ -18,21 +18,20 @@ Route::get('/', ['as' => 'home_path', 'uses' => function () {
     return view('welcome');
 }]);
 
-Route::post('student_signup', 'Api\Auth\SignUpController@studentSignUp');
-Route::post('tutor_signup', 'Api\Auth\TutorSignUpController@studentSignUp');
-Route::post('student_signin', 'Api\Auth\SignInController@studentSignIn');
+
 Route::post('mega_signin', 'Api\Auth\SignInController@megaSignIn');
-Route::post('student_logout', 'Api\Auth\LogOutController@studentLogOut');
-  Route::post('getTmData', 'Api\Auth\ChatController@getTmData');
+
+
+
+
 
 
 Route::group(['middleware' => ['jwt.auth']], function(){
 
-Route::post('uploadImage', 'Api\Auth\ChatController@uploadImage');
-Route::get('testresponse', 'Api\Auth\ChatController@testResponse');
-  Route::get('getStudents', 'StudentController@index');
-  Route::get('getTutors', 'StudentController@getTutors');
-  Route::post('addTutor', 'StudentController@addTutor');
+Route::post('uploadFile', 'Api\Auth\ChatController@uploadFile');
+Route::post('uploadAvatar', 'Api\Auth\ChatController@uploadAvatar');
+  Route::post('student_logout', 'Api\Auth\LogOutController@studentLogOut');
+Route::post('student_signup', 'Api\Auth\SignUpController@studentSignUp');
   Route::get('getFriendLists', 'Api\Auth\ChatController@getFriendLists');
   Route::get('getUserId', 'Api\Auth\ChatController@getCurrentUserId');
   Route::get('getUnreadMessages', 'Api\Auth\ChatController@getUnreadMessages');
@@ -43,8 +42,3 @@ Route::get('testresponse', 'Api\Auth\ChatController@testResponse');
 
 
 });
-
-Route::get('getAllStudents', 'Api\RecordingController@getData');
-
-
-Route::post('audio_recording', 'Api\RecordingController@getFileRecording');

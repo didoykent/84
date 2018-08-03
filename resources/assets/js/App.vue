@@ -23,7 +23,7 @@
             <q-item-side right icon="thumb_up" />
           </q-item>
 
-          <q-item to="student-logout"  v-if = "isLogged">
+          <q-item @click.native = "studentLogOut"  v-if = "isLogged">
             <q-item-side icon="account circle" />
             <q-item-main label="Play" sublabel="LogOut" />
             <q-item-side right icon="thumb_up" />
@@ -170,8 +170,8 @@ var vm =  this
 
 
       vm.$store.dispatch('studentLogOut')
+
                 vm.$socket.disconnect();
-              
 
 
     }

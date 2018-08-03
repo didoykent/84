@@ -15,7 +15,7 @@ var users = [];
 
 
 
-server.listen(8890);
+server.listen(7740);
 
 
 io.on('connection', function(socket){
@@ -28,7 +28,49 @@ io.on('connection', function(socket){
 
 
 
+socket.on('typingStatus', function(latestmessage){
 
+  var clientsConnected = 0
+
+ var connected = false
+
+ var notInRoom = true
+
+
+   if(defaultRoom == socket.room){
+
+ notInRoom = false
+
+     io.in(defaultRoom).clients(function (error, clients) {
+                   if (error) { throw error; }
+
+
+                   clientsConnected = clients.length
+   if(clients.length<3){
+
+
+
+                   for(var i =0; i<clients.length; i++){
+
+                     if(clients[i] != socket.id){
+                         connected = true
+                       io.to(clients[i]).emit('myTypingStatus', {friend: latestmessage.friend, clientsData: clients, bonusdata: latestmessage.bonusdata, isConnected:connected, currentUser: latestmessage.currentUserName, messageType:latestmessage.messageType, isTyping:latestmessage.isTyping, currentUserAvatar: latestmessage.currentUserAvatar})
+
+
+                     }
+
+                   }
+
+
+
+                 }
+
+               })
+
+
+             }
+
+})
 
 
 
@@ -57,7 +99,7 @@ notInRoom = false
 
                     if(clients[i] != socket.id){
                         connected = true
-                      io.to(clients[i]).emit('sendMessage', {message: latestmessage.message, friend: latestmessage.friend, messagedata: latestmessage.messagedata, clientsData: clients, bonusdata: latestmessage.bonusdata, isConnected:connected, currentUser: latestmessage.currentUserName})
+                      io.to(clients[i]).emit('sendMessage', {message: latestmessage.message, friend: latestmessage.friend, messagedata: latestmessage.messagedata, clientsData: clients, bonusdata: latestmessage.bonusdata, isConnected:connected, currentUser: latestmessage.currentUserName, messageType:latestmessage.messageType, currentUserAvatar:latestmessage.currentUserAvatar})
 
 
                     }
@@ -259,7 +301,7 @@ else{
 
 
 socket.on('ImOn', function(data){
-  
+
     users.push(socket.id)
     io.sockets.emit('Now', data)
 

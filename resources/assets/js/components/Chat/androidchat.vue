@@ -463,6 +463,8 @@ inbox: [
        }.bind(this))
 
        vm.$socket.on('messageNotification', function(data){
+
+
      var vm = this
       console.log('test')
      console.log('myunread',data)

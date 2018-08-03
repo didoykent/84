@@ -70,7 +70,7 @@ var vm = this
 
   localStorage.removeItem('token');
   commit(types.LOGOUT);
-     router.push('/')
+     router.push('/student-login')
 
   console.log(response.data)
 
