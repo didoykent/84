@@ -37,7 +37,7 @@ QLayoutDrawer, QDrawer, QLayoutFooter, QScrollArea, QListHeader, QItem, QItemSid
 
 Vue.directive('close-overlay', CloseOverlay);
 Vue.use(Vuetify);
-Vue.use(VueSocketio, 'http://localhost:8890');
+Vue.use(VueSocketio, 'http://178.128.213.14:7740');
 
 
 

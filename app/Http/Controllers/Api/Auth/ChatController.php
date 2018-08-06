@@ -592,6 +592,7 @@ $myTutor[0]->save();
 
 
 
+
 return response()->json(['tmData' => 'test']);
 }
 
